@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GJIMT SkillX | Workshop Priority Selection</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --primary:#f26522;
+  --dark:#222;
+  --light:#f7f8fc;
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif}
+
+body{
+  background:linear-gradient(135deg,#f7f8fc,#eef1f8);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+/* ===== HEADER ===== */
+header{
+  background:#fff;
+  box-shadow:0 2px 10px rgba(0,0,0,.08);
+}
+.navbar{
+  max-width:1200px;
+  margin:auto;
+  padding:14px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.logos img{height:46px}
+
+.nav-actions a{
+  text-decoration:none;
+  margin-left:12px;
+  padding:8px 16px;
+  border-radius:20px;
+  font-size:.9rem;
+  font-weight:500;
+  border:1px solid var(--primary);
+  color:var(--primary);
+  transition:.3s;
+}
+.nav-actions a:hover{
+  background:var(--primary);
+  color:#fff;
+}
+
+/* ===== MAIN CARD ===== */
+.page{
+  flex:1;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  padding:40px 20px;
+}
+.wrapper{
+  background:#fff;
+  max-width:650px;
+  width:100%;
+  border-radius:24px;
+  box-shadow:0 20px 45px rgba(0,0,0,.12);
+  overflow:hidden;
+}
+.header{
+  background:linear-gradient(135deg,var(--primary),#ff8a4c);
+  color:#fff;
+  padding:32px 20px;
+  text-align:center;
+}
+.header h2{font-weight:600}
+
+form{padding:30px}
+.field, .priority{margin-bottom:16px}
+
+input,textarea,select{
+  width:100%;
+  padding:12px 14px;
+  border-radius:10px;
+  border:1px solid #ccc;
+  font-size:.95rem;
+}
+select{background:#fff}
+
+.priority{
+  padding:14px;
+  border-radius:14px;
+  background:#fafafa;
+  border:1px dashed #ddd;
+}
+
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:40px;
+  background:var(--primary);
+  color:#fff;
+  font-size:1rem;
+  font-weight:600;
+  cursor:pointer;
+  transition:.3s;
+}
+button:hover{
+  background:#d6521c;
+  transform:translateY(-1px);
+}
+
+/* ===== FOOTER ===== */
+footer{
+  background:#111;
+  color:#ccc;
+  text-align:center;
+  padding:14px;
+  font-size:.85rem;
+}
+footer span{
+  color:#fff;
+  font-weight:500;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="navbar">
+    <div class="logos">
+      <img src="https://www.gjimt.ac.in/wp-content/uploads/2025/09/gjimt-logo.png">
+    </div>
+    <div class="nav-actions">
+      <a href="javascript:history.back()">⬅ Back</a>
+      <a href="index.html">🏠 Home</a>
+    </div>
+  </div>
+</header>
+
+<div class="page">
+<div class="wrapper">
+
+<div class="header">
+  <h2>SkillX Workshop Selection</h2>
+</div>
+
+<form id="workshopForm">
+
+<div class="field"><input id="name" required placeholder="Student Name"></div>
+<div class="field"><input id="class" required placeholder="Class"></div>
+<div class="field"><input id="mobile" required placeholder="Mobile"></div>
+<div class="field"><textarea id="address" placeholder="Address"></textarea></div>
+
+<!-- Priority 1 -->
+<div class="priority">
+  <select class="module">
+    <option value="">Priority 1 – Module</option>
+    <option>Digital Power Skills</option>
+    <option>Communication & Personal Branding</option>
+    <option>Business & Financial Smart Skills</option>
+  </select>
+  <select class="workshop">
+    <option value="">Workshop</option>
+  </select>
+</div>
+
+<!-- Priority 2 -->
+<div class="priority">
+  <select class="module">
+    <option value="">Priority 2 – Module</option>
+    <option>Digital Power Skills</option>
+    <option>Communication & Personal Branding</option>
+    <option>Business & Financial Smart Skills</option>
+  </select>
+  <select class="workshop">
+    <option value="">Workshop</option>
+  </select>
+</div>
+
+<!-- Priority 3 -->
+<div class="priority">
+  <select class="module">
+    <option value="">Priority 3 – Module</option>
+    <option>Digital Power Skills</option>
+    <option>Communication & Personal Branding</option>
+    <option>Business & Financial Smart Skills</option>
+  </select>
+  <select class="workshop">
+    <option value="">Workshop</option>
+  </select>
+</div>
+
+<button type="submit">Submit</button>
+
+</form>
+</div>
+</div>
+
+<script>
+const workshopMap = {
+  "Digital Power Skills": ["AI – Enabled Learning","Excel + Power BI","Web Development"],
+  "Communication & Personal Branding": ["Functional English","Public Speaking"],
+  "Business & Financial Smart Skills": ["AI for Business","Resume & LinkedIn"]
+};
+
+const modules = document.querySelectorAll(".module");
+const workshops = document.querySelectorAll(".workshop");
+
+// Populate workshops
+modules.forEach((m, i) => {
+  m.addEventListener("change", () => {
+    const w = workshops[i];
+    w.innerHTML = "<option value=''>Workshop</option>";
+
+    (workshopMap[m.value] || []).forEach(item => {
+      w.add(new Option(item, item));
+    });
+
+    lockDuplicates();
+  });
+});
+
+workshops.forEach(w => w.addEventListener("change", lockDuplicates));
+
+function lockDuplicates() {
+  const selected = [...workshops].map(w => w.value).filter(Boolean);
+
+  workshops.forEach(current => {
+    [...current.options].forEach(opt => {
+      if (!opt.value) return;
+      opt.disabled = selected.includes(opt.value) && opt.value !== current.value;
+    });
+  });
+}
+
+// ✅ DEPLOYED WEB APP URL
+const WEB_APP_URL =
+  "https://script.google.com/macros/s/AKfycbwFMwtdvRiQwLkdYKJ60JcLp_X0VndPuPpCeAoagrhQSw9A_lT9gtNDCGN1RKKID6I/exec";
+
+document.getElementById("workshopForm").addEventListener("submit", e => {
+  e.preventDefault();
+
+  const fd = new FormData();
+  fd.append("registrationType", "Bundle Workshop");
+  fd.append("name", document.getElementById("name").value);
+  fd.append("class", document.getElementById("class").value);
+  fd.append("mobile", document.getElementById("mobile").value);
+  fd.append("address", document.getElementById("address").value);
+
+  fd.append("p1Module", modules[0].value);
+  fd.append("p1Workshop", workshops[0].value);
+  fd.append("p2Module", modules[1].value);
+  fd.append("p2Workshop", workshops[1].value);
+  fd.append("p3Module", modules[2].value);
+  fd.append("p3Workshop", workshops[2].value);
+
+  fetch(WEB_APP_URL, {
+    method: "POST",
+    body: fd   // 🚨 IMPORTANT: NO headers
+  })
+  .then(res => res.text())
+  .then(txt => {
+    alert(txt);
+    e.target.reset();
+    workshops.forEach(w => w.innerHTML = "<option value=''>Workshop</option>");
+  })
+  .catch(err => {
+    console.error(err);
+    alert("Network error – Web App not deployed correctly");
+  });
+});
+</script>
+
+
+
+</body>
+</html>

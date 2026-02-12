@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Enabled Documentation | SkillX Zero to Hero</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --primary:#8e1b6a;
+  --accent:#ff5fa2;
+  --dark:#1f1f1f;
+  --light:#ffffff;
+  --bg:#f7f7fb;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{background:var(--bg);color:#333;}
+
+/* HEADER */
+header{
+  background:#fff;
+  box-shadow:0 4px 14px rgba(0,0,0,.1);
+}
+.navbar{
+  max-width:1200px;
+  margin:auto;
+  padding:14px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.logos img{height:45px;margin-right:12px;}
+nav a{
+  text-decoration:none;
+  margin-left:22px;
+  color:#333;
+  font-weight:500;
+}
+
+/* HERO */
+.hero{
+  background:linear-gradient(135deg,#8e1b6a,#ff5fa2);
+  color:#fff;
+  padding:80px 20px;
+}
+.hero-content{
+  max-width:1200px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:40px;
+  align-items:center;
+}
+
+.badge{
+  display:inline-block;
+  background:#fff;
+  color:var(--primary);
+  padding:6px 14px;
+  border-radius:20px;
+  font-size:.85rem;
+  margin-bottom:15px;
+  font-weight:600;
+}
+
+.hero h1{
+  font-size:2.7rem;
+  margin-bottom:10px;
+}
+.hero h2{
+  font-size:1.3rem;
+  font-weight:500;
+  margin-bottom:14px;
+}
+.hero p{
+  font-size:1rem;
+  margin-bottom:20px;
+}
+
+.hero ul{
+  list-style:none;
+}
+.hero li{
+  margin:10px 0;
+  padding-left:26px;
+  position:relative;
+}
+.hero li::before{
+  content:"✔";
+  position:absolute;
+  left:0;
+  color:#fff;
+}
+
+.hero img{
+  width:100%;
+  max-width:320px;
+  margin:auto;
+}
+
+/* SECTION */
+section{padding:70px 20px;}
+.container{max-width:1200px;margin:auto;}
+.section-title{
+  text-align:center;
+  font-size:2.2rem;
+  color:var(--primary);
+  margin-bottom:40px;
+}
+
+/* LEARNING FOCUS */
+.focus{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:25px;
+}
+.focus-card{
+  background:#fff;
+  padding:26px;
+  border-radius:18px;
+  box-shadow:0 10px 25px rgba(0,0,0,.1);
+}
+.focus-card h4{
+  color:var(--accent);
+  margin-bottom:8px;
+}
+
+/* TOOLS + FEES */
+.tools-fees{
+  display:grid;
+  grid-template-columns:1.4fr 1fr;
+  gap:50px;
+  align-items:start;
+}
+
+/* TOOLS */
+.tools{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+  gap:22px;
+  text-align:center;
+}
+.tool{
+  background:#fff;
+  padding:20px;
+  border-radius:16px;
+  box-shadow:0 6px 18px rgba(0,0,0,.1);
+}
+.tool img{
+  height:40px;
+  margin-bottom:10px;
+}
+
+/* FEES */
+.fees-box{
+  background:#fff;
+  border-radius:20px;
+  padding:30px;
+  text-align:center;
+  box-shadow:0 14px 35px rgba(0,0,0,.12);
+  border-top:6px solid var(--accent);
+}
+.fees-box h3{
+  color:var(--primary);
+  font-size:1.6rem;
+}
+.fees-amount{
+  font-size:2.8rem;
+  font-weight:700;
+  color:var(--accent);
+  margin:18px 0;
+}
+.fees-box ul{
+  list-style:none;
+  text-align:left;
+}
+.fees-box li{
+  margin:10px 0;
+  padding-left:24px;
+  position:relative;
+}
+.fees-box li::before{
+  content:"✔";
+  position:absolute;
+  left:0;
+  color:var(--accent);
+}
+
+/* FOOTER */
+footer{
+  background:#1f1f1f;
+  color:#ccc;
+  text-align:center;
+  padding:18px;
+  font-size:.9rem;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .hero-content,.tools-fees{grid-template-columns:1fr;text-align:center;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="navbar">
+    <div class="logos">
+      <img src="https://www.gjimt.ac.in/wp-content/uploads/2025/09/gjimt-logo.png">
+     
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="modules.html">Modules</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+
+    <div>
+      <span class="badge">5 Days Workshop</span>
+      <h1>AI Enabled Documentation</h1>
+      <h2>WRITE-IT-RIGHT AI Challenge</h2>
+      <p><strong>Brain + AI + Words = Fun Power Model</strong></p>
+
+      <ul>
+        <li>Future-ready documentation powered by AI</li>
+        <li>Hands-on writing, structuring & automation</li>
+        <li>Professional & academic documentation skills</li>
+        <li>AI tools for speed, clarity & accuracy</li>
+      </ul>
+    </div>
+
+    <img src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png" alt="AI Documentation">
+
+  </div>
+</section>
+
+<!-- LEARNING FOCUS -->
+<section>
+  <div class="container">
+    <h2 class="section-title">Learning Focus</h2>
+
+    <div class="focus">
+      <div class="focus-card">
+        <h4>Document Creation</h4>
+        <p>AI-assisted reports, notes & summaries</p>
+      </div>
+      <div class="focus-card">
+        <h4>Smart Formatting</h4>
+        <p>Professional layouts & structures</p>
+      </div>
+      <div class="focus-card">
+        <h4>Automation</h4>
+        <p>Fast content generation & editing</p>
+      </div>
+      <div class="focus-card">
+        <h4>Real Use Cases</h4>
+        <p>College, office & research documentation</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS & FEES -->
+<section>
+  <div class="container">
+    <h2 class="section-title">Tools & Fees</h2>
+
+    <div class="tools-fees">
+
+      <!-- TOOLS -->
+      <div>
+        <div class="tools">
+          <div class="tool"><img src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png"><p>ChatGPT</p></div>
+          <div class="tool"><img src="Notion.png"><p>Notion</p></div>
+          <div class="tool"><img src="copilot.png"><p>Copilot</p></div>
+          <div class="tool"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968292.png"><p>Napkin</p></div>
+        </div>
+      </div>
+
+      <!-- FEES -->
+      <div class="fees-box">
+        <h3>Workshop Fees</h3>
+        <div class="fees-amount">₹2,500</div>
+        <ul>
+          <li>5 days hands-on training</li>
+          <li>Live AI activities</li>
+          <li>Mini documentation projects</li>
+          <li>SkillX Certificate</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026 Gian Jyoti Institute of Management & Technology | SkillX Zero to Hero
+</footer>
+
+</body>
+</html>

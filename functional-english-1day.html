@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>One Day Workshop on Functional English | SkillX</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+body{
+  background:#f6f6f6;
+  color:#222;
+}
+
+/* ================= HEADER ================= */
+header{
+  background:#fff;
+  box-shadow:0 2px 10px rgba(0,0,0,.08);
+  position:sticky;
+  top:0;
+  z-index:999;
+}
+.navbar{
+  max-width:1200px;
+  margin:auto;
+  padding:14px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.logos{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.logos img{height:46px;}
+nav a{
+  text-decoration:none;
+  color:#222;
+  margin-left:22px;
+  font-weight:500;
+}
+
+/* ===== HERO ===== */
+.hero{
+  background:linear-gradient(135deg,#c31432,#240b36);
+  color:#fff;
+  padding:70px 20px;
+}
+.hero-inner{
+  max-width:1200px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:40px;
+  align-items:center;
+}
+.hero-badge{
+  display:inline-block;
+  background:#ffcc00;
+  color:#000;
+  padding:10px 24px;
+  border-radius:30px;
+  font-weight:700;
+  margin-bottom:12px;
+}
+.hero h1{
+  font-size:2.8rem;
+  font-weight:700;
+}
+.hero p{
+  font-size:1.1rem;
+  margin:12px 0;
+}
+.hero img{
+  width:100%;
+  border-radius:18px;
+}
+
+/* ===== FEATURES ===== */
+.features{
+  background:#fff;
+  margin-top:-40px;
+  padding:55px 20px;
+  border-radius:40px 40px 0 0;
+}
+.features-inner{
+  max-width:1000px;
+  margin:auto;
+}
+.features h2{
+  text-align:center;
+  color:#b11226;
+  font-size:2.2rem;
+  margin-bottom:35px;
+}
+.feature-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:25px;
+}
+.feature{
+  background:#fff1f1;
+  padding:20px;
+  border-radius:16px;
+  display:flex;
+  gap:12px;
+}
+.feature span{
+  font-size:1.6rem;
+  color:#c31432;
+}
+
+/* ===== CTA ===== */
+.cta{
+  background:linear-gradient(135deg,#240b36,#c31432);
+  color:#fff;
+  text-align:center;
+  padding:60px 20px;
+}
+.cta h2{
+  font-size:2.2rem;
+}
+.cta p{
+  margin:12px 0 20px;
+}
+.cta a{
+  display:inline-block;
+  background:#ffcc00;
+  color:#000;
+  padding:14px 36px;
+  border-radius:30px;
+  text-decoration:none;
+  font-weight:700;
+}
+
+/* ===== FOOTER ===== */
+footer{
+  background:#111;
+  color:#ccc;
+  text-align:center;
+  padding:18px;
+  font-size:.9rem;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .hero-inner{
+    grid-template-columns:1fr;
+    text-align:center;
+  }
+  .header-inner{
+    justify-content:center;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER WITH LOGOS -->
+<header>
+  <div class="navbar">
+    <div class="logos">
+      <img src="https://www.gjimt.ac.in/wp-content/uploads/2025/09/gjimt-logo.png">
+   
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="modules.html">Workshops</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge">ONE DAY WORKSHOP</div>
+      <h1>ON FUNCTIONAL ENGLISH</h1>
+      <p>Boost Your English Skills with Practical Learning</p>
+    </div>
+  
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="features-inner">
+    <h2>What You Will Learn</h2>
+
+    <div class="feature-list">
+      <div class="feature">
+        <span>✔</span>
+        <div>
+          <h4>Functional Grammar</h4>
+          <p>Grammar for real-life communication.</p>
+        </div>
+      </div>
+
+      <div class="feature">
+        <span>✔</span>
+        <div>
+          <h4>Practical Vocabulary</h4>
+          <p>Everyday words & expressions.</p>
+        </div>
+      </div>
+
+      <div class="feature">
+        <span>✔</span>
+        <div>
+          <h4>Situational English</h4>
+          <p>Speak confidently in real situations.</p>
+        </div>
+      </div>
+
+      <div class="feature">
+        <span>✔</span>
+        <div>
+          <h4>Role Plays</h4>
+          <p>Hands-on speaking activities.</p>
+        </div>
+      </div>
+
+      <div class="feature">
+        <span>✔</span>
+        <div>
+          <h4>Listening & Speaking Drills</h4>
+          <p>Improve fluency & pronunciation.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <h2>Speak English with Confidence</h2>
+  <p>Limited Seats Available – Register Today</p>
+  <a href="register.html">Register Now</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  Building Careers Since 1998 | GJIMT<br>
+  MBA | MCA | BCA | BBA | B.Com (Hons)<br>
+  📞 +91 99144 33199 | 🌐 www.gjimt.ac.in
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vedic Maths | SkillX Zero to Hero</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --primary:#6a1b9a;
+  --accent:#ff7043;
+  --bg:#faf7fb;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{background:var(--bg);color:#333;}
+
+/* HEADER */
+header{
+  background:#fff;
+  box-shadow:0 2px 10px rgba(0,0,0,.08);
+  position:sticky;top:0;z-index:999;
+}
+.navbar{
+  max-width:1200px;
+  margin:auto;
+  padding:14px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.logos img{height:46px;margin-right:12px;}
+nav a{text-decoration:none;color:#222;margin-left:22px;font-weight:500;}
+
+/* HERO */
+.hero{
+  background:linear-gradient(135deg,#6a1b9a,#ff7043);
+  color:#fff;
+  text-align:center;
+  padding:80px 20px 60px;
+}
+.hero h1{font-size:3rem;margin-bottom:10px;}
+.hero h2{font-size:1.4rem;margin-bottom:10px;}
+.hero p{font-size:1.05rem;opacity:.95;}
+
+/* FEES BOX */
+.fees-box{
+  max-width:420px;
+  margin:30px auto 0;
+  background:#fff;
+  color:#333;
+  padding:25px;
+  border-radius:18px;
+  box-shadow:0 12px 30px rgba(0,0,0,.15);
+}
+.fees-box h3{
+  color:var(--primary);
+  margin-bottom:10px;
+}
+.fees-amount{
+  font-size:2.6rem;
+  font-weight:700;
+  color:var(--accent);
+}
+.fees-box p{
+  font-size:.95rem;
+  margin-top:8px;
+  color:#555;
+}
+
+/* WHY */
+.why{
+  max-width:1000px;
+  margin:60px auto;
+  background:#fff;
+  border-radius:20px;
+  box-shadow:0 12px 30px rgba(0,0,0,.1);
+  padding:35px;
+}
+.why h3{text-align:center;color:var(--primary);margin-bottom:30px;}
+.why-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:25px;
+  text-align:center;
+}
+.why-item{
+  padding:20px;
+  border-radius:14px;
+  background:#f6eef8;
+  font-weight:600;
+}
+
+/* DAYS */
+.section{
+  max-width:1200px;
+  margin:60px auto;
+  padding:0 20px;
+}
+.section-title{
+  text-align:center;
+  font-size:2.2rem;
+  color:var(--primary);
+  margin-bottom:40px;
+}
+.days{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:30px;
+}
+.day{
+  background:#fff;
+  border-radius:18px;
+  padding:25px;
+  box-shadow:0 10px 25px rgba(0,0,0,.12);
+}
+.day h4{margin-bottom:15px;color:var(--accent);}
+.day ul{list-style:none;}
+.day ul li{
+  margin:8px 0;
+  padding-left:22px;
+  position:relative;
+}
+.day ul li::before{
+  content:"✔";
+  position:absolute;
+  left:0;
+  color:var(--primary);
+}
+
+/* CTA */
+.cta{
+  background:linear-gradient(135deg,#6a1b9a,#ff7043);
+  color:#fff;
+  text-align:center;
+  padding:70px 20px;
+}
+.cta h2{font-size:2.3rem;}
+.cta p{margin:12px 0 20px;}
+.cta a{
+  display:inline-block;
+  background:#fff;
+  color:var(--primary);
+  padding:14px 36px;
+  border-radius:30px;
+  text-decoration:none;
+  font-weight:600;
+}
+
+/* FOOTER */
+footer{
+  background:#1f1f1f;
+  color:#ccc;
+  text-align:center;
+  padding:18px;
+  font-size:.9rem;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="navbar">
+    <div class="logos">
+      <img src="https://www.gjimt.ac.in/wp-content/uploads/2025/09/gjimt-logo.png">
+    
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="modules.html">Workshops</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <h1>Vedic Maths</h1>
+  <h2>5-Day Power Workshop</h2>
+  <p>Speed • Accuracy • Mental Calculation</p>
+
+  <!-- FEES -->
+  <div class="fees-box">
+    <h3>Workshop Fee</h3>
+    <div class="fees-amount">₹2,500</div>
+    <p>Includes training, practice material & SkillX certificate</p>
+  </div>
+</section>
+
+<section class="why">
+  <h3>Why Vedic Maths?</h3>
+  <div class="why-grid">
+    <div class="why-item">⚡ Faster Calculations</div>
+    <div class="why-item">🎯 Improves Accuracy</div>
+    <div class="why-item">🏆 Competitive Exam Ready</div>
+  </div>
+</section>
+
+<section class="section">
+  <h2 class="section-title">5-Day Workshop Plan</h2>
+
+  <div class="days">
+    <div class="day">
+      <h4>Day 1 – Foundation & Speed</h4>
+      <ul>
+        <li>Holistic Maths & mental addition</li>
+        <li>Creative multiplication</li>
+        <li>Magic numbers & digit sums</li>
+      </ul>
+    </div>
+
+    <div class="day">
+      <h4>Day 2 – Smart Operations</h4>
+      <ul>
+        <li>Invisible numbers</li>
+        <li>Fast subtraction</li>
+        <li>Multiplication by 11</li>
+      </ul>
+    </div>
+
+    <div class="day">
+      <h4>Day 3 – Patterns & Logic</h4>
+      <ul>
+        <li>Number patterns</li>
+        <li>Natural maths (Sutras)</li>
+        <li>Squares & roots</li>
+      </ul>
+    </div>
+
+    <div class="day">
+      <h4>Day 4 – Advanced Methods</h4>
+      <ul>
+        <li>Square roots</li>
+        <li>Recurring decimals</li>
+      </ul>
+    </div>
+
+    <div class="day">
+      <h4>Day 5 – Exam Power</h4>
+      <ul>
+        <li>Permutations & combinations</li>
+        <li>Counting principles</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <h2>Unlock the Power of Numbers</h2>
+  <p>Think Faster • Calculate Smarter</p>
+  <a href="register.html">Register Now</a>
+</section>
+
+<footer>
+  © 2026 GJIMT SkillX | Zero to Hero Workshops<br>
+  AICTE Approved | IKGPTU Affiliated | Sector 54, Chandigarh
+</footer>
+
+</body>
+</html>

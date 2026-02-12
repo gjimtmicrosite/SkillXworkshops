@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canva Design Workshop</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+body{
+  background:#0b0f2a;
+  color:#fff;
+}
+
+/* ===== HEADER ===== */
+/* ================= HEADER ================= */
+header{
+  background:#fff;
+  box-shadow:0 2px 10px rgba(0,0,0,.08);
+  position:sticky;
+  top:0;
+  z-index:999;
+}
+.navbar{
+  max-width:1200px;
+  margin:auto;
+  padding:14px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.logos{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.logos img{height:46px;}
+nav a{
+  text-decoration:none;
+  color:#222;
+  margin-left:22px;
+  font-weight:500;
+}
+
+/* ===== HERO ===== */
+.hero{
+  background:
+    linear-gradient(rgba(10,15,60,.85),rgba(10,15,60,.95)),
+    url("canva-bg.jpg") center/cover no-repeat;
+  padding:80px 20px 100px;
+  text-align:center;
+}
+.hero img{
+  width:120px;
+}
+.hero h1{
+  font-size:3.2rem;
+  font-weight:700;
+  margin-top:20px;
+}
+.hero h2{
+  font-size:1.4rem;
+  margin-top:8px;
+}
+.hero p{
+  margin-top:15px;
+  font-size:1.2rem;
+}
+
+/* ===== CORE FEATURES ===== */
+.features{
+  max-width:1200px;
+  margin:-70px auto 60px;
+  padding:0 20px;
+}
+.features-title{
+  background:#fff;
+  color:#3b1d6d;
+  display:inline-block;
+  padding:10px 28px;
+  border-radius:30px;
+  font-weight:600;
+  margin-bottom:30px;
+}
+.feature-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:25px;
+}
+.feature-box{
+  background:rgba(255,255,255,.95);
+  color:#111;
+  border-radius:16px;
+  padding:20px;
+}
+.feature-box h3{
+  color:#6a1b9a;
+  margin-bottom:10px;
+  font-size:1.05rem;
+}
+.feature-box ul{
+  padding-left:18px;
+  font-size:.9rem;
+}
+.feature-box li{
+  margin-bottom:6px;
+}
+
+/* ===== QR + FOOTER STRIP ===== */
+.bottom-strip{
+  background:linear-gradient(90deg,#2a0b5f,#0d1a4a);
+  padding:35px 20px;
+}
+.bottom-inner{
+  max-width:1200px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:20px;
+  align-items:center;
+}
+.bottom-text{
+  font-size:.95rem;
+}
+.bottom-text strong{
+  font-size:1.05rem;
+}
+.qr{
+  background:#fff;
+  padding:8px;
+  border-radius:10px;
+}
+.qr img{
+  width:110px;
+}
+
+/* ===== FOOTER ===== */
+footer{
+  background:#000;
+  padding:18px;
+  text-align:center;
+  font-size:.85rem;
+  color:#ccc;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .hero h1{font-size:2.3rem;}
+  .bottom-inner{grid-template-columns:1fr;text-align:center;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="navbar">
+    <div class="logos">
+      <img src="https://www.gjimt.ac.in/wp-content/uploads/2025/09/gjimt-logo.png">
+   
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="modules.html">Workshops</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+
+  <h1>CANVA DESIGN</h1>
+  <h2>1-DAY WORKSHOP</h2>
+  <p>Unlock Your Creative Potential with <strong>Canva</strong></p>
+</section>
+
+<!-- CORE FEATURES -->
+<section class="features">
+  <div style="text-align:center">
+    <div class="features-title">CORE FEATURES OF CANVA</div>
+  </div>
+
+  <div class="feature-grid">
+    <div class="feature-box">
+      <h3>Ready-Made Templates & Drag-and-Drop Editor</h3>
+      <ul>
+        <li>Thousands of templates for posters, resumes & social media</li>
+        <li>Fully customizable designs</li>
+        <li>No design experience required</li>
+        <li>Move, resize & arrange easily</li>
+      </ul>
+    </div>
+
+    <div class="feature-box">
+      <h3>Design Alignment & Layout Tools</h3>
+      <ul>
+        <li>Grids, rulers, margins & snap-to-align</li>
+        <li>Clean & professional layouts</li>
+        <li>Share designs via link</li>
+        <li>Real-time collaboration</li>
+      </ul>
+    </div>
+
+    <div class="feature-box">
+      <h3>Text, Fonts & Elements Library</h3>
+      <ul>
+        <li>Wide range of fonts & styles</li>
+        <li>Text effects & spacing options</li>
+        <li>Icons, charts & illustrations</li>
+        <li>Search-based element selection</li>
+      </ul>
+    </div>
+
+    <div class="feature-box">
+      <h3>Images, Media & Background Tools</h3>
+      <ul>
+        <li>Upload images, videos & documents</li>
+        <li>Predefined color palettes</li>
+        <li>Custom colors & saved styles</li>
+      </ul>
+    </div>
+
+    <div class="feature-box">
+      <h3>Download, Export & Cloud Access</h3>
+      <ul>
+        <li>PNG, JPG, PDF & MP4 formats</li>
+        <li>Print & digital friendly</li>
+        <li>Auto-saved online designs</li>
+        <li>Access from any device</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- BOTTOM -->
+<section class="bottom-strip">
+  <div class="bottom-inner">
+    <div class="bottom-text">
+      <strong>Gian Jyoti Institute of Management & Technology</strong><br>
+      Building Careers Since 1998<br>
+      MBA | MCA | BCA | BBA | B.Com (Hons)<br>
+      Sector-54, Chandigarh | Phase-2, Mohali<br>
+      🌐 www.gjimt.ac.in
+    </div>
+    <div class="qr">
+      <a href="contact.html">Register Now</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © GJIMT SkillX – Zero to Hero Workshop
+</footer>
+
+</body>
+</html>
