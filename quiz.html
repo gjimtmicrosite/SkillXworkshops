@@ -184,7 +184,57 @@ function finish(){
   window.location.href="dashboard.html";
 }
 </script>
+<script>
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyCkUBvX2-mG9N4sGcmTAeV1Ow35gs1yo29fqzGjw9V72sygS26W7_OCjGzC0RhSEA/exec";
+
+const quizInfo = JSON.parse(localStorage.getItem("quizInfo"));
+let questions = [];
+let current = 0;
+let score = 0;
+
+document.getElementById("title").innerText =
+`${quizInfo.workshop} | Day ${quizInfo.day} | ${quizInfo.level}`;
+
+fetch(`${WEB_APP_URL}?action=generateQuiz&workshop=${encodeURIComponent(quizInfo.workshop)}&level=${quizInfo.level}&day=${quizInfo.day}`)
+.then(res => res.json())
+.then(data => {
+  questions = data.questions;
+  loadQuestion();
+});
+
+function loadQuestion(){
+  const q = questions[current];
+  document.getElementById("question").innerText = `${current+1}. ${q.question}`;
+
+  const opts = document.querySelectorAll(".option");
+  opts.forEach((btn,i)=>{
+    btn.innerText = q.options[i];
+    btn.onclick = ()=>selectAnswer(i);
+  });
+}
+
+function selectAnswer(i){
+  if(i === questions[current].answer) score++;
+  current++;
+
+  if(current < questions.length){
+    loadQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult(){
+  const percent = (score / questions.length) * 100;
+  alert(`Score: ${percent}%`);
+
+  if(percent >= 50){
+    alert("🎉 Certificate unlocked!");
+  }
+}
+</script>
 
 </body>
 </html>
+
 
