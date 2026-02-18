@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>SkillX Quiz</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  font-family:Poppins,Arial;
+  background:#f4f6fb;
+  margin:0;
+}
+.quiz-box{
+  max-width:800px;
+  margin:40px auto;
+  background:#fff;
+  padding:30px;
+  border-radius:14px;
+  box-shadow:0 15px 40px rgba(0,0,0,.15);
+}
+h2{color:#6a1b9a}
+.option{
+  padding:12px;
+  border:1px solid #ccc;
+  margin:10px 0;
+  border-radius:6px;
+  cursor:pointer;
+}
+.option:hover{
+  background:#ede7f6;
+}
+.option.selected{
+  background:#6a1b9a;
+  color:#fff;
+}
+button{
+  margin-top:20px;
+  padding:12px 20px;
+  background:#6a1b9a;
+  color:#fff;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+}
+.hidden{display:none}
+</style>
+</head>
+
+<body>
+
+<div class="quiz-box">
+  <h2 id="title"></h2>
+  <p id="question"></p>
+  <div id="options"></div>
+  <button onclick="next()">Next</button>
+</div>
+
+<script>
+const WEB_APP_URL = "YOUR_APPS_SCRIPT_WEB_APP_URL";
+
+const quizInfo = JSON.parse(localStorage.getItem("currentQuiz"));
+const student = JSON.parse(localStorage.getItem("student"));
+
+let questions=[], index=0, score=0, selected=null;
+
+document.getElementById("title").innerText =
+  `${quizInfo.workshop} | Day ${quizInfo.day} | ${quizInfo.level.toUpperCase()}`;
+
+fetch(WEB_APP_URL,{
+  method:"POST",
+  body:new URLSearchParams({
+    action:"quiz",
+    workshop:quizInfo.workshop,
+    level:quizInfo.level
+  })
+})
+.then(res=>res.json())
+.then(data=>{
+  questions=data.questions;
+  render();
+});
+
+function render(){
+  const q=questions[index];
+  document.getElementById("question").innerText =
+    `${index+1}. ${q.q}`;
+
+  const optDiv=document.getElementById("options");
+  optDiv.innerHTML="";
+  q.options.forEach((o,i)=>{
+    const d=document.createElement("div");
+    d.className="option";
+    d.innerText=o;
+    d.onclick=()=>{
+      document.querySelectorAll(".option")
+        .forEach(x=>x.classList.remove("selected"));
+      d.classList.add("selected");
+      selected=i;
+    };
+    optDiv.appendChild(d);
+  });
+}
+
+function next(){
+  if(selected===null) return alert("Select an option");
+
+  if(selected===questions[index].answer) score++;
+  selected=null;
+  index++;
+
+  if(index<questions.length){
+    render();
+  }else{
+    finish();
+  }
+}
+
+function finish(){
+  const percent = (score/questions.length)*100;
+  alert(`Score: ${percent}%`);
+
+  let progress = JSON.parse(localStorage.getItem("quizProgress")) || {
+    day:1,
+    completed:{}
+  };
+
+  if(percent>=50){
+    progress.completed[
+      `${quizInfo.day}-${quizInfo.level}`
+    ]=true;
+
+    const levels=["simple","moderate","expert"];
+    const allDone = levels.every(l =>
+      progress.completed[`${quizInfo.day}-${l}`]
+    );
+
+    if(allDone){
+      progress.day = Math.max(progress.day, quizInfo.day+1);
+    }
+  }
+
+  localStorage.setItem("quizProgress",JSON.stringify(progress));
+  window.location.href="dashboard.html";
+}
+</script>
+
+</body>
+</html>
