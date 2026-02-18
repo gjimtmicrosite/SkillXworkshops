@@ -1,11 +1,37 @@
-function login() {
-  let username = document.getElementById("username").value;
-  let password = document.getElementById("password").value;
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzKeehk1UXoe9UaWPhjHlh4qNY-5F2QvzfJjkYLklWefvwt7OTDwvV_xugWiQHWcZQ/exec";
 
-  if (username === "student" && password === "1234") {
-    localStorage.setItem("studentName", username);
-    window.location.href = "dashboard.html"; // OPEN DASHBOARD
-  } else {
-    document.getElementById("error").innerText = "Invalid login credentials";
+function login(){
+  const errorBox = document.getElementById("error");
+  errorBox.innerText = "";
+
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  if(!username || !password){
+    errorBox.innerText = "Please enter username & password";
+    return;
   }
+
+  const formData = new URLSearchParams({
+    action: "login",
+    username,
+    password
+  });
+
+  fetch(WEB_APP_URL, {
+    method: "POST",
+    body: formData
+  })
+  .then(res => res.json())
+  .then(data => {
+    if(data.success){
+      localStorage.setItem("student", JSON.stringify(data.student));
+      window.location.href = "dashboard.html";
+    } else {
+      errorBox.innerText = "Invalid username or password";
+    }
+  })
+  .catch(() => {
+    errorBox.innerText = "Server error. Please try again.";
+  });
 }
