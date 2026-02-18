@@ -71,6 +71,26 @@
   </div>
 
 <script>
+
+  const daysContainer = document.getElementById("days");
+
+for (let d = 1; d <= 5; d++) {
+  const btn = document.createElement("button");
+  btn.innerText = "Day " + d;
+  btn.className = "day-btn";
+
+  btn.onclick = () => {
+    localStorage.setItem("quizSettings", JSON.stringify({
+      day: d,
+      level: "simple",
+      workshop: student.workshop
+    }));
+    window.location.href = "quiz.html";
+  };
+
+  daysContainer.appendChild(btn);
+}
+
   console.log("Dashboard loaded");
 
   const studentRaw = localStorage.getItem("student");
@@ -105,3 +125,4 @@
 
 </body>
 </html>
+
