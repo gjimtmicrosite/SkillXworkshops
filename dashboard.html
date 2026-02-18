@@ -2,107 +2,175 @@
 <html>
 <head>
 <title>SkillX Dashboard</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
-body{margin:0;font-family:Poppins;background:#f4f6fb;display:flex;height:100vh}
-.sidebar{width:250px;background:#5a189a;color:#fff;padding:20px}
-.sidebar button{width:100%;margin:8px 0;padding:10px;border:none;background:#7b2cbf;color:#fff;border-radius:6px;cursor:pointer}
-.main{flex:1;padding:30px;overflow:auto}
-.card{background:#fff;padding:20px;border-radius:12px;box-shadow:0 10px 25px rgba(0,0,0,.1);margin-bottom:20px}
-.hidden{display:none}
+body{
+  margin:0;
+  font-family:Poppins,Arial;
+  background:#f4f6fb;
+}
+.container{
+  display:flex;
+}
+.sidebar{
+  width:240px;
+  background:#6a1b9a;
+  color:#fff;
+  min-height:100vh;
+  padding:20px;
+}
+.sidebar h2{
+  text-align:center;
+}
+.sidebar button{
+  width:100%;
+  margin:10px 0;
+  padding:12px;
+  border:none;
+  background:#8e24aa;
+  color:#fff;
+  border-radius:6px;
+  cursor:pointer;
+}
+.sidebar button:disabled{
+  background:#aaa;
+  cursor:not-allowed;
+}
+.main{
+  flex:1;
+  padding:30px;
+}
+.card{
+  background:#fff;
+  padding:25px;
+  border-radius:12px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.1);
+}
+.day-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:15px;
+  margin-top:20px;
+}
+.day{
+  padding:15px;
+  text-align:center;
+  background:#ede7f6;
+  border-radius:10px;
+  cursor:pointer;
+}
+.day.locked{
+  background:#ccc;
+  cursor:not-allowed;
+}
+.popup{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
+.popup-content{
+  background:#fff;
+  padding:25px;
+  border-radius:10px;
+  width:300px;
+  text-align:center;
+}
+.popup-content button{
+  width:100%;
+  margin-top:10px;
+}
 </style>
 </head>
 
 <body>
 
-<div class="sidebar">
-  <h3>🎓 SkillX</h3>
-  <button onclick="startQuiz('simple')">Simple Quiz</button>
-  <button onclick="startQuiz('moderate')">Moderate Quiz</button>
-  <button onclick="startQuiz('difficult')">Difficult Quiz</button>
-  <button onclick="logout()">Logout</button>
-</div>
+<div class="container">
 
-<div class="main">
+  <div class="sidebar">
+    <h2>🎓 SkillX</h2>
+    <button onclick="logout()">Logout</button>
+  </div>
 
-<div class="card">
- <h2>Welcome <span id="studentName"></span></h2>
+  <div class="main">
+    <div class="card">
+      <h2>Welcome <span id="studentName"></span></h2>
 <p>Workshop: <b><span id="workshopName"></span></b></p>
 
+
+      <h3>Day-wise Quiz</h3>
+      <div class="day-grid" id="days"></div>
+    </div>
+  </div>
+
 </div>
 
-<div id="quiz" class="card hidden">
-  <h3 id="quizTitle"></h3>
-  <div id="questionBox"></div>
-  <button onclick="nextQuestion()">Next</button>
-  <p id="progress"></p>
-</div>
-
-<div id="result" class="card hidden"></div>
-
+<!-- LEVEL POPUP -->
+<div class="popup" id="popup">
+  <div class="popup-content">
+    <h3>Select Level</h3>
+    <button onclick="startQuiz('simple')">Simple</button>
+    <button onclick="startQuiz('moderate')">Moderate</button>
+    <button onclick="startQuiz('expert')">Expert</button>
+    <button onclick="closePopup()">Cancel</button>
+  </div>
 </div>
 
 <script>
 const student = JSON.parse(localStorage.getItem("student"));
 if(!student) location.href="login.html";
 
-document.getElementById("name").innerText = student.name;
-document.getElementById("workshop").innerText = student.singleWorkshop;
+document.getElementById("studentName").innerText = student.name;
+document.getElementById("workshopName").innerText = student.workshop;
 
-const WEB_APP_URL = "PASTE_YOUR_WEB_APP_URL";
+// PROGRESS TRACKER
+let progress = JSON.parse(localStorage.getItem("quizProgress")) || {
+  day:1,
+  completed:{}
+};
 
-let questions=[], index=0, score=0;
+const daysDiv = document.getElementById("days");
+
+function renderDays(){
+  daysDiv.innerHTML="";
+  for(let d=1; d<=5; d++){
+    const div = document.createElement("div");
+    div.className = "day " + (d>progress.day ? "locked":"");
+    div.innerText = "Day " + d;
+    if(d<=progress.day){
+      div.onclick = ()=>openPopup(d);
+    }
+    daysDiv.appendChild(div);
+  }
+}
+renderDays();
+
+let selectedDay = null;
+
+function openPopup(day){
+  selectedDay = day;
+  document.getElementById("popup").style.display="flex";
+}
+
+function closePopup(){
+  document.getElementById("popup").style.display="none";
+}
 
 function startQuiz(level){
-  document.getElementById("quiz").classList.remove("hidden");
-  document.getElementById("result").classList.add("hidden");
-  document.getElementById("quizTitle").innerText = level.toUpperCase()+" QUIZ";
+  closePopup();
 
-  fetch(WEB_APP_URL,{
-    method:"POST",
-    body:new URLSearchParams({
-      action:"generateQuiz",
-      workshop:student.singleWorkshop,
-      level:level
-    })
-  })
-  .then(r=>r.json())
-  .then(d=>{
-    questions=d.questions;
-    index=0; score=0;
-    loadQuestion();
-  });
-}
+  // SAVE CURRENT ATTEMPT
+  localStorage.setItem("currentQuiz", JSON.stringify({
+    day:selectedDay,
+    level,
+    workshop:student.workshop
+  }));
 
-function loadQuestion(){
-  const q=questions[index];
-  document.getElementById("questionBox").innerHTML=`
-    <p><b>${q.question}</b></p>
-    ${q.options.map((o,i)=>`
-      <label>
-        <input type="radio" name="opt" value="${i}"> ${o}
-      </label><br>`).join("")}`;
-  document.getElementById("progress").innerText =
-    `Question ${index+1} of 20`;
-}
-
-function nextQuestion(){
-  const sel=document.querySelector("input[name='opt']:checked");
-  if(sel && Number(sel.value)===questions[index].answer) score++;
-  index++;
-  if(index<20) loadQuestion();
-  else showResult();
-}
-
-function showResult(){
-  document.getElementById("quiz").classList.add("hidden");
-  document.getElementById("result").classList.remove("hidden");
-  const percent=Math.round(score/20*100);
-  document.getElementById("result").innerHTML=`
-    <h3>Result</h3>
-    <p>Score: ${score}/20</p>
-    <p>Percentage: ${percent}%</p>
-    ${percent>=50?"<b>🎉 Certificate Eligible</b>":""}`;
+  // GO TO QUIZ PAGE
+  window.location.href="quiz.html";
 }
 
 function logout(){
@@ -110,18 +178,6 @@ function logout(){
   location.href="login.html";
 }
 </script>
-<script>
-const student = JSON.parse(localStorage.getItem("student"));
-
-if(!student){
-  window.location.href = "login.html";
-}
-
-document.getElementById("studentName").innerText = student.name;
-document.getElementById("workshopName").innerText = student.workshop;
-</script>
 
 </body>
 </html>
-
-
