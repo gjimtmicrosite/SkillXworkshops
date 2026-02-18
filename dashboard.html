@@ -1,237 +1,112 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>SkillX Student Dashboard | GJIMT</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-
+<title>SkillX Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-:root{
-  --primary:#7b2cbf;
-  --dark:#240046;
-  --bg:#f4f6fb;
-}
-*{box-sizing:border-box;font-family:'Poppins',sans-serif;}
-body{margin:0;background:var(--bg);display:flex;height:100vh;}
-
-/* SIDEBAR */
-.sidebar{
-  width:260px;
-  background:linear-gradient(180deg,var(--primary),var(--dark));
-  color:#fff;
-  padding:25px;
-}
-.sidebar h2{margin-bottom:30px;font-size:22px;}
-.sidebar button{
-  width:100%;
-  padding:12px;
-  margin-bottom:12px;
-  border:none;
-  background:rgba(255,255,255,0.15);
-  color:#fff;
-  border-radius:8px;
-  cursor:pointer;
-  text-align:left;
-}
-.sidebar button:hover{background:rgba(255,255,255,0.3);}
-
-/* MAIN */
-.main{
-  flex:1;
-  padding:30px;
-  overflow-y:auto;
-}
-
-/* HEADER */
-.header{
-  background:#fff;
-  padding:20px;
-  border-radius:14px;
-  box-shadow:0 10px 25px rgba(0,0,0,.08);
-  margin-bottom:25px;
-}
-.header h1{color:var(--primary);margin:0;}
-.header p{color:#555;}
-
-/* CARD */
-.card{
-  background:#fff;
-  padding:25px;
-  border-radius:16px;
-  box-shadow:0 12px 30px rgba(0,0,0,.08);
-  margin-bottom:25px;
-}
-
-/* QUIZ */
-.question{
-  font-weight:600;
-  margin-bottom:15px;
-}
-.options label{
-  display:block;
-  margin-bottom:10px;
-  cursor:pointer;
-}
-.options input{margin-right:8px;}
-
-.hidden{display:none;}
-
-.progress{
-  margin-top:15px;
-  font-weight:600;
-}
-
-/* CERTIFICATE */
-.certificate{
-  background:linear-gradient(135deg,#ffb703,#ff8500);
-  color:#fff;
-  padding:25px;
-  border-radius:16px;
-  text-align:center;
-}
-.certificate button{
-  background:#fff;
-  color:#333;
-  border:none;
-  padding:12px 20px;
-  border-radius:8px;
-  font-weight:600;
-  cursor:pointer;
-}
+body{margin:0;font-family:Poppins;background:#f4f6fb;display:flex;height:100vh}
+.sidebar{width:250px;background:#5a189a;color:#fff;padding:20px}
+.sidebar button{width:100%;margin:8px 0;padding:10px;border:none;background:#7b2cbf;color:#fff;border-radius:6px;cursor:pointer}
+.main{flex:1;padding:30px;overflow:auto}
+.card{background:#fff;padding:20px;border-radius:12px;box-shadow:0 10px 25px rgba(0,0,0,.1);margin-bottom:20px}
+.hidden{display:none}
 </style>
 </head>
 
 <body>
 
 <div class="sidebar">
-  <h2>🎓 SkillX LMS</h2>
-  <button onclick="showSection('profile')">👤 My Profile</button>
-  <button onclick="startQuiz('simple')">🟢 Simple Quiz</button>
-  <button onclick="startQuiz('moderate')">🟡 Moderate Quiz</button>
-  <button onclick="startQuiz('difficult')">🔴 Difficult Quiz</button>
-  <button onclick="logout()">🚪 Logout</button>
+  <h3>🎓 SkillX</h3>
+  <button onclick="startQuiz('simple')">Simple Quiz</button>
+  <button onclick="startQuiz('moderate')">Moderate Quiz</button>
+  <button onclick="startQuiz('difficult')">Difficult Quiz</button>
+  <button onclick="logout()">Logout</button>
 </div>
 
 <div class="main">
 
-  <!-- HEADER -->
-  <div class="header">
-    <h1>Welcome, <span id="studentName"></span> 👋</h1>
-    <p>Workshop: <strong id="workshopName"></strong></p>
-  </div>
+<div class="card">
+  <h2>Welcome <span id="name"></span></h2>
+  <p>Workshop: <b id="workshop"></b></p>
+</div>
 
-  <!-- PROFILE -->
-  <div id="profile" class="card">
-    <h3>Your Details</h3>
-    <p><b>Email:</b> <span id="email"></span></p>
-    <p><b>Mobile:</b> <span id="mobile"></span></p>
-  </div>
+<div id="quiz" class="card hidden">
+  <h3 id="quizTitle"></h3>
+  <div id="questionBox"></div>
+  <button onclick="nextQuestion()">Next</button>
+  <p id="progress"></p>
+</div>
 
-  <!-- QUIZ -->
-  <div id="quiz" class="card hidden">
-    <h3 id="quizTitle"></h3>
-    <div id="questionBox"></div>
-    <button onclick="nextQuestion()">Next</button>
-    <div class="progress" id="progress"></div>
-  </div>
-
-  <!-- RESULT -->
-  <div id="result" class="card hidden"></div>
-
-  <!-- CERTIFICATE -->
-  <div id="certificate" class="certificate hidden">
-    <h2>🎉 Congratulations!</h2>
-    <p>You are eligible for the SkillX Certificate</p>
-    <button onclick="downloadCertificate()">⬇ Download Certificate</button>
-  </div>
+<div id="result" class="card hidden"></div>
 
 </div>
 
 <script>
-/* ================= AUTH ================= */
 const student = JSON.parse(localStorage.getItem("student"));
-if(!student){ window.location.href="login.html"; }
+if(!student) location.href="login.html";
 
-/* ================= LOAD DATA ================= */
-document.getElementById("studentName").innerText = student.name;
-document.getElementById("workshopName").innerText = student.singleWorkshop || "SkillX Program";
-document.getElementById("email").innerText = student.email;
-document.getElementById("mobile").innerText = student.mobile;
+document.getElementById("name").innerText = student.name;
+document.getElementById("workshop").innerText = student.singleWorkshop;
 
-/* ================= NAV ================= */
-function showSection(id){
-  document.querySelectorAll(".card,.certificate").forEach(el=>el.classList.add("hidden"));
-  document.getElementById(id).classList.remove("hidden");
-}
+const WEB_APP_URL = "PASTE_YOUR_WEB_APP_URL";
 
-/* ================= QUIZ ENGINE ================= */
-let questions=[], current=0, score=0;
-
-function generateQuestions(level){
-  const topic = student.singleWorkshop || "SkillX";
-  questions=[];
-  for(let i=1;i<=20;i++){
-    questions.push({
-      q:`(${level.toUpperCase()}) ${topic} Question ${i}`,
-      options:["Option A","Option B","Option C","Option D"],
-      ans:0
-    });
-  }
-}
+let questions=[], index=0, score=0;
 
 function startQuiz(level){
-  generateQuestions(level);
-  current=0; score=0;
-  document.getElementById("quizTitle").innerText = `${level.toUpperCase()} LEVEL QUIZ`;
-  showSection("quiz");
-  loadQuestion();
+  document.getElementById("quiz").classList.remove("hidden");
+  document.getElementById("result").classList.add("hidden");
+  document.getElementById("quizTitle").innerText = level.toUpperCase()+" QUIZ";
+
+  fetch(WEB_APP_URL,{
+    method:"POST",
+    body:new URLSearchParams({
+      action:"generateQuiz",
+      workshop:student.singleWorkshop,
+      level:level
+    })
+  })
+  .then(r=>r.json())
+  .then(d=>{
+    questions=d.questions;
+    index=0; score=0;
+    loadQuestion();
+  });
 }
 
 function loadQuestion(){
-  const q=questions[current];
+  const q=questions[index];
   document.getElementById("questionBox").innerHTML=`
-    <div class="question">${q.q}</div>
-    <div class="options">
-      ${q.options.map((o,i)=>`
-        <label>
-          <input type="radio" name="opt" value="${i}"> ${o}
-        </label>`).join("")}
-    </div>`;
+    <p><b>${q.question}</b></p>
+    ${q.options.map((o,i)=>`
+      <label>
+        <input type="radio" name="opt" value="${i}"> ${o}
+      </label><br>`).join("")}`;
   document.getElementById("progress").innerText =
-    `Question ${current+1} of 20`;
+    `Question ${index+1} of 20`;
 }
 
 function nextQuestion(){
   const sel=document.querySelector("input[name='opt']:checked");
-  if(sel && Number(sel.value)===questions[current].ans) score++;
-  current++;
-  if(current<20) loadQuestion();
+  if(sel && Number(sel.value)===questions[index].answer) score++;
+  index++;
+  if(index<20) loadQuestion();
   else showResult();
 }
 
 function showResult(){
-  showSection("result");
-  const percent = Math.round((score/20)*100);
+  document.getElementById("quiz").classList.add("hidden");
+  document.getElementById("result").classList.remove("hidden");
+  const percent=Math.round(score/20*100);
   document.getElementById("result").innerHTML=`
-    <h3>Quiz Result</h3>
-    <p>Score: <b>${score}/20</b></p>
-    <p>Percentage: <b>${percent}%</b></p>`;
-  if(percent>=50){
-    document.getElementById("certificate").classList.remove("hidden");
-  }
+    <h3>Result</h3>
+    <p>Score: ${score}/20</p>
+    <p>Percentage: ${percent}%</p>
+    ${percent>=50?"<b>🎉 Certificate Eligible</b>":""}`;
 }
 
-/* ================= CERTIFICATE ================= */
-function downloadCertificate(){
-  alert("Certificate download logic (PDF) will be connected here ✅");
-}
-
-/* ================= LOGOUT ================= */
 function logout(){
   localStorage.clear();
-  window.location.href="login.html";
+  location.href="login.html";
 }
 </script>
 
