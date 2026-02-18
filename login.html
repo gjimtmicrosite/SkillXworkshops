@@ -1,77 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>SkillX Student Login</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
-<style>
-body{
-  font-family:'Poppins',sans-serif;
-  background:linear-gradient(135deg,#7b2cbf,#240046);
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-.login-box{
-  background:#fff;
-  width:360px;
-  padding:35px;
-  border-radius:14px;
-  box-shadow:0 20px 40px rgba(0,0,0,.2);
-}
-h2{
-  text-align:center;
-  color:#7b2cbf;
-  margin-bottom:25px;
-}
-input{
-  width:100%;
-  padding:12px;
-  margin-bottom:15px;
-  border:1px solid #ccc;
-  border-radius:6px;
-  font-size:15px;
-}
-button{
-  width:100%;
-  padding:12px;
-  background:#7b2cbf;
-  color:white;
-  border:none;
-  font-size:16px;
-  border-radius:6px;
-  cursor:pointer;
-}
-button:hover{
-  background:#5a189a;
-}
-#error{
-  margin-top:15px;
-  color:red;
-  text-align:center;
-}
-</style>
-</head>
-
-<body>
-
-<div class="login-box">
-  <h2>Student Login</h2>
-
-  <input type="text" id="username" placeholder="Username" required>
-  <input type="password" id="password" placeholder="Password" required>
-
-  <button onclick="login()">Login</button>
-
-  <div id="error"></div>
-</div>
-
 <script>
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwhnM6Gh7gEaIgVnHpP8aIunbnyGleMw_RzPGNSnwc7lbqAXLIV--FJlOfoii00cig/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/NEW_DEPLOYMENT_URL/exec";
 
 function login(){
   document.getElementById("error").innerText = "";
@@ -84,32 +12,27 @@ function login(){
     return;
   }
 
-  fetch(WEB_APP_URL,{
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json"
-    },
-    body:JSON.stringify({
-      action:"login",
-      username:username,
-      password:password
-    })
+  const formData = new URLSearchParams();
+  formData.append("action", "login");
+  formData.append("username", username);
+  formData.append("password", password);
+
+  fetch(WEB_APP_URL, {
+    method: "POST",
+    body: formData
   })
   .then(res => res.json())
   .then(data => {
     if(data.success){
       localStorage.setItem("student", JSON.stringify(data.student));
       window.location.href = "dashboard.html";
-    }else{
+    } else {
       document.getElementById("error").innerText = "Invalid username or password";
     }
   })
-  .catch(err=>{
+  .catch(err => {
     console.error(err);
     document.getElementById("error").innerText = "Server Error. Please try again.";
   });
 }
 </script>
-
-</body>
-</html>
