@@ -66,19 +66,52 @@ document.getElementById("title").innerText =
 
 // ================== AUTO QUESTION GENERATOR ==================
 function generateQuestions(){
-  const baseTopic = quizInfo.workshop;
+  const topic = quizInfo.workshop;
+  const level = quizInfo.level;
+
+  const correctTemplates = [
+    `Optimizing keywords relevant to ${topic}`,
+    `Structuring content clearly for recruiters in ${topic}`,
+    `Highlighting measurable achievements related to ${topic}`,
+    `Improving visibility using industry-specific terms in ${topic}`,
+    `Aligning profile content with job roles in ${topic}`
+  ];
+
+  const wrongTemplates = [
+    `Using decorative fonts and colors`,
+    `Adding irrelevant personal information`,
+    `Copy-pasting the same content everywhere`,
+    `Ignoring keywords and ATS requirements`,
+    `Focusing only on academic marks`
+  ];
+
   for(let i=1;i<=20;i++){
+
+    // pick correct answer
+    const correctAnswer =
+      correctTemplates[i % correctTemplates.length];
+
+    // pick 3 wrong answers
+    const wrongAnswers = shuffleArray(wrongTemplates)
+                          .slice(0,3);
+
+    // combine & shuffle
+    const options = shuffleArray([
+      correctAnswer,
+      ...wrongAnswers
+    ]);
+
     questions.push({
-      q:`(${quizInfo.level.toUpperCase()}) Q${i}: What is an important concept of ${baseTopic}?`,
-      options:[
-        "Correct concept",
-        "Wrong option 1",
-        "Wrong option 2",
-        "Wrong option 3"
-      ],
-      answer:0
+      q: `( ${level.toUpperCase()} ) Q${i}: What is an important concept of ${topic}?`,
+      options: options,
+      answer: options.indexOf(correctAnswer) // correct index
     });
   }
+}
+
+// utility shuffle
+function shuffleArray(arr){
+  return arr.sort(()=>Math.random()-0.5);
 }
 
 // ================== START QUIZ ==================
@@ -154,3 +187,4 @@ function finish(){
 
 </body>
 </html>
+
