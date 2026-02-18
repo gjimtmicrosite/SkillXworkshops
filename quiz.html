@@ -1,194 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>SkillX AI Quiz</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-body{
-  margin:0;
-  font-family: Arial, sans-serif;
-  background:#f4f6fb;
-}
-.container{
-  max-width:900px;
-  margin:40px auto;
-  background:#fff;
-  padding:30px;
-  border-radius:12px;
-  box-shadow:0 10px 30px rgba(0,0,0,.1);
-}
-h2{color:#6a1bb9}
-.option{
-  padding:12px;
-  border:1px solid #ccc;
-  border-radius:6px;
-  margin:10px 0;
-  cursor:pointer;
-}
-.option:hover{background:#f1e8ff}
-.option.selected{
-  background:#6a1bb9;
-  color:#fff;
-  border-color:#6a1bb9;
-}
-button{
-  background:#6a1bb9;
-  color:#fff;
-  border:none;
-  padding:12px 22px;
-  border-radius:6px;
-  font-size:16px;
-  cursor:pointer;
-}
-button:disabled{
-  background:#aaa;
-}
-.center{text-align:center}
-.hidden{display:none}
-</style>
+  <title>SkillX Quiz</title>
 </head>
-
 <body>
 
-<div class="container">
+<h2 id="title"></h2>
+<p id="student"></p>
 
-  <!-- HEADER -->
-  <h2 id="title">SkillX Quiz</h2>
-  <p id="meta"></p>
-
-  <!-- QUESTION -->
-  <div id="quizBox" class="hidden">
-    <h3 id="questionText"></h3>
-    <div id="options"></div>
-
-    <div class="center" style="margin-top:20px">
-      <button id="nextBtn" disabled>Next</button>
-    </div>
-  </div>
-
-  <!-- RESULT -->
-  <div id="resultBox" class="hidden center">
-    <h2 id="resultText"></h2>
-    <p id="scoreText"></p>
-    <button onclick="location.href='dashboard.html'">Back to Dashboard</button>
-  </div>
-
-</div>
+<div id="quiz"></div>
 
 <script>
-/* ================= CONFIG ================= */
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwJtIea6b0vGQvrQ-6v7iEH2VJe5sgmUormFZNTaJuf2z3UwjpRNbl8huGu_8wVhLs/exec";
-const TOTAL_QUESTIONS = 20;
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwmzKiA1juE924WPd8MnxYhpAj32fX7K1QaSlsrdtL2s8wM9wKWWxS_XOdmyXXU72Y/exec";
 
-/* ================= DATA ================= */
 const student = JSON.parse(localStorage.getItem("student"));
-const quizSettings = JSON.parse(localStorage.getItem("quizSettings"));
+const settings = JSON.parse(localStorage.getItem("quizSettings"));
 
-let questions = [];
-let index = 0;
-let score = 0;
-let selected = null;
-
-/* ================= INIT ================= */
-if(!student || !quizSettings){
-  alert("Session expired. Please login again.");
-  location.href = "login.html";
+if (!student || !settings) {
+  alert("Quiz data missing. Go back to dashboard.");
+  window.location.href = "dashboard.html";
 }
 
 document.getElementById("title").innerText =
-  `${quizSettings.workshop} | Day ${quizSettings.day} | ${quizSettings.level.toUpperCase()}`;
+  settings.workshop + " | Day " + settings.day + " | " + settings.level.toUpperCase();
 
-document.getElementById("meta").innerText =
-  `Student: ${student.name}`;
+document.getElementById("student").innerText =
+  "Student: " + student.name;
 
-/* ================= LOAD QUIZ ================= */
 fetch(WEB_APP_URL, {
-  method:"POST",
-  body:new URLSearchParams({
-    action:"quiz",
-    level: quizSettings.level,
-    topic: quizSettings.workshop + " Day " + quizSettings.day
+  method: "POST",
+  body: new URLSearchParams({
+    action: "quiz",
+    topic: settings.workshop,
+    level: settings.level,
+    day: settings.day
   })
 })
-.then(r=>r.json())
-.then(d=>{
-  if(!d.success){
-    alert("Quiz generation failed");
-    return;
-  }
-  questions = d.quiz;
-  document.getElementById("quizBox").classList.remove("hidden");
-  showQuestion();
-})
-.catch(()=>{
-  alert("Server error while loading quiz");
-});
+.then(res => res.json())
+.then(data => {
+  if (!data.success) throw "AI failed";
 
-/* ================= SHOW QUESTION ================= */
-function showQuestion(){
-  selected = null;
-  document.getElementById("nextBtn").disabled = true;
-
-  const q = questions[index];
-  document.getElementById("questionText").innerText =
-    `${index+1}. ${q.question}`;
-
-  const optBox = document.getElementById("options");
-  optBox.innerHTML = "";
-
-  Object.keys(q.options).forEach(key=>{
-    const div = document.createElement("div");
-    div.className = "option";
-    div.innerText = `${key}. ${q.options[key]}`;
-    div.onclick = ()=>{
-      document.querySelectorAll(".option")
-        .forEach(o=>o.classList.remove("selected"));
-      div.classList.add("selected");
-      selected = key;
-      document.getElementById("nextBtn").disabled = false;
-    };
-    optBox.appendChild(div);
+  const container = document.getElementById("quiz");
+  data.questions.forEach((q, i) => {
+    container.innerHTML += `
+      <p><b>${i+1}. ${q.question}</b></p>
+      ${q.options.map((o, idx) =>
+        `<label><input type="radio" name="q${i}"> ${o}</label><br>`
+      ).join("")}
+      <hr>`;
   });
-}
-
-/* ================= NEXT ================= */
-document.getElementById("nextBtn").onclick = ()=>{
-  if(selected === questions[index].answer){
-    score++;
-  }
-  index++;
-
-  if(index < TOTAL_QUESTIONS){
-    showQuestion();
-  }else{
-    showResult();
-  }
-};
-
-/* ================= RESULT ================= */
-function showResult(){
-  document.getElementById("quizBox").classList.add("hidden");
-  document.getElementById("resultBox").classList.remove("hidden");
-
-  const percent = Math.round((score/TOTAL_QUESTIONS)*100);
-  document.getElementById("scoreText").innerText =
-    `Score: ${score}/${TOTAL_QUESTIONS} (${percent}%)`;
-
-  if(percent >= 50){
-    document.getElementById("resultText").innerText =
-      "🎉 Congratulations! You Passed";
-    // certificate logic can be added here
-  }else{
-    document.getElementById("resultText").innerText =
-      "❌ You did not pass. Try again.";
-  }
-}
+})
+.catch(err => {
+  alert("Quiz generation failed");
+  console.error(err);
+});
 </script>
 
 </body>
 </html>
-
-
-
