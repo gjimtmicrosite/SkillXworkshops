@@ -1,240 +1,191 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>SkillX Quiz</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<title>SkillX AI Quiz</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body{
-  font-family:Poppins,Arial;
-  background:#f4f6fb;
   margin:0;
+  font-family: Arial, sans-serif;
+  background:#f4f6fb;
 }
-.quiz-box{
-  max-width:850px;
+.container{
+  max-width:900px;
   margin:40px auto;
   background:#fff;
   padding:30px;
-  border-radius:14px;
-  box-shadow:0 15px 40px rgba(0,0,0,.15);
+  border-radius:12px;
+  box-shadow:0 10px 30px rgba(0,0,0,.1);
 }
-h2{color:#6a1b9a}
+h2{color:#6a1bb9}
 .option{
   padding:12px;
   border:1px solid #ccc;
-  margin:10px 0;
   border-radius:6px;
+  margin:10px 0;
   cursor:pointer;
 }
-.option:hover{background:#ede7f6}
+.option:hover{background:#f1e8ff}
 .option.selected{
-  background:#6a1b9a;
+  background:#6a1bb9;
   color:#fff;
+  border-color:#6a1bb9;
 }
 button{
-  margin-top:20px;
-  padding:12px 22px;
-  background:#6a1b9a;
+  background:#6a1bb9;
   color:#fff;
   border:none;
+  padding:12px 22px;
   border-radius:6px;
+  font-size:16px;
   cursor:pointer;
 }
 button:disabled{
-  background:#bbb;
-  cursor:not-allowed;
+  background:#aaa;
 }
+.center{text-align:center}
+.hidden{display:none}
 </style>
 </head>
 
 <body>
 
-<div class="quiz-box">
-  <h2 id="title"></h2>
-  <p id="question"></p>
-  <div id="options"></div>
-  <button id="nextBtn" onclick="next()" disabled>Next</button>
+<div class="container">
+
+  <!-- HEADER -->
+  <h2 id="title">SkillX Quiz</h2>
+  <p id="meta"></p>
+
+  <!-- QUESTION -->
+  <div id="quizBox" class="hidden">
+    <h3 id="questionText"></h3>
+    <div id="options"></div>
+
+    <div class="center" style="margin-top:20px">
+      <button id="nextBtn" disabled>Next</button>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="resultBox" class="hidden center">
+    <h2 id="resultText"></h2>
+    <p id="scoreText"></p>
+    <button onclick="location.href='dashboard.html'">Back to Dashboard</button>
+  </div>
+
 </div>
 
 <script>
-// ================== QUIZ CONTEXT ==================
-const quizInfo = JSON.parse(localStorage.getItem("currentQuiz"));
-let questions=[], index=0, score=0, selected=null;
+/* ================= CONFIG ================= */
+const WEB_APP_URL = "YOUR_WEB_APP_URL_HERE";
+const TOTAL_QUESTIONS = 20;
 
-document.getElementById("title").innerText =
-`${quizInfo.workshop} | Day ${quizInfo.day} | ${quizInfo.level.toUpperCase()}`;
+/* ================= DATA ================= */
+const student = JSON.parse(localStorage.getItem("student"));
+const quizSettings = JSON.parse(localStorage.getItem("quizSettings"));
 
-// ================== AUTO QUESTION GENERATOR ==================
-function generateQuestions(){
-  const topic = quizInfo.workshop;
-  const level = quizInfo.level;
-
-  const correctTemplates = [
-    `Optimizing keywords relevant to ${topic}`,
-    `Structuring content clearly for recruiters in ${topic}`,
-    `Highlighting measurable achievements related to ${topic}`,
-    `Improving visibility using industry-specific terms in ${topic}`,
-    `Aligning profile content with job roles in ${topic}`
-  ];
-
-  const wrongTemplates = [
-    `Using decorative fonts and colors`,
-    `Adding irrelevant personal information`,
-    `Copy-pasting the same content everywhere`,
-    `Ignoring keywords and ATS requirements`,
-    `Focusing only on academic marks`
-  ];
-
-  for(let i=1;i<=20;i++){
-
-    // pick correct answer
-    const correctAnswer =
-      correctTemplates[i % correctTemplates.length];
-
-    // pick 3 wrong answers
-    const wrongAnswers = shuffleArray(wrongTemplates)
-                          .slice(0,3);
-
-    // combine & shuffle
-    const options = shuffleArray([
-      correctAnswer,
-      ...wrongAnswers
-    ]);
-
-    questions.push({
-      q: `( ${level.toUpperCase()} ) Q${i}: What is an important concept of ${topic}?`,
-      options: options,
-      answer: options.indexOf(correctAnswer) // correct index
-    });
-  }
-}
-
-// utility shuffle
-function shuffleArray(arr){
-  return arr.sort(()=>Math.random()-0.5);
-}
-
-// ================== START QUIZ ==================
-generateQuestions();
-render();
-
-// ================== RENDER ==================
-function render(){
-  selected=null;
-  document.getElementById("nextBtn").disabled=true;
-
-  const q=questions[index];
-  document.getElementById("question").innerText =
-  `${index+1}. ${q.q}`;
-
-  const optDiv=document.getElementById("options");
-  optDiv.innerHTML="";
-
-  q.options.forEach((o,i)=>{
-    const d=document.createElement("div");
-    d.className="option";
-    d.innerText=o;
-
-    d.onclick=()=>{
-      document.querySelectorAll(".option")
-        .forEach(x=>x.classList.remove("selected"));
-      d.classList.add("selected");
-      selected=i;
-      document.getElementById("nextBtn").disabled=false;
-    };
-
-    optDiv.appendChild(d);
-  });
-}
-
-// ================== NEXT ==================
-function next(){
-  if(selected === questions[index].answer) score++;
-  index++;
-
-  if(index < questions.length){
-    render();
-  }else{
-    finish();
-  }
-}
-
-// ================== FINISH ==================
-function finish(){
-  const percent=(score/questions.length)*100;
-  alert(`Quiz Completed!\nScore: ${percent.toFixed(2)}%`);
-
-  let progress=JSON.parse(localStorage.getItem("quizProgress"))||{
-    day:1,
-    completed:{}
-  };
-
-  if(percent>=50){
-    progress.completed[
-      `${quizInfo.day}-${quizInfo.level}`
-    ]=true;
-
-    const levels=["simple","moderate","expert"];
-    if(levels.every(l=>progress.completed[`${quizInfo.day}-${l}`])){
-      progress.day=Math.max(progress.day,quizInfo.day+1);
-    }
-  }
-
-  localStorage.setItem("quizProgress",JSON.stringify(progress));
-  window.location.href="dashboard.html";
-}
-</script>
-<script>
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyCkUBvX2-mG9N4sGcmTAeV1Ow35gs1yo29fqzGjw9V72sygS26W7_OCjGzC0RhSEA/exec";
-
-const quizInfo = JSON.parse(localStorage.getItem("quizInfo"));
 let questions = [];
-let current = 0;
+let index = 0;
 let score = 0;
+let selected = null;
+
+/* ================= INIT ================= */
+if(!student || !quizSettings){
+  alert("Session expired. Please login again.");
+  location.href = "login.html";
+}
 
 document.getElementById("title").innerText =
-`${quizInfo.workshop} | Day ${quizInfo.day} | ${quizInfo.level}`;
+  `${quizSettings.workshop} | Day ${quizSettings.day} | ${quizSettings.level.toUpperCase()}`;
 
-fetch(`${WEB_APP_URL}?action=generateQuiz&workshop=${encodeURIComponent(quizInfo.workshop)}&level=${quizInfo.level}&day=${quizInfo.day}`)
-.then(res => res.json())
-.then(data => {
-  questions = data.questions;
-  loadQuestion();
+document.getElementById("meta").innerText =
+  `Student: ${student.name}`;
+
+/* ================= LOAD QUIZ ================= */
+fetch(WEB_APP_URL, {
+  method:"POST",
+  body:new URLSearchParams({
+    action:"quiz",
+    level: quizSettings.level,
+    topic: quizSettings.workshop + " Day " + quizSettings.day
+  })
+})
+.then(r=>r.json())
+.then(d=>{
+  if(!d.success){
+    alert("Quiz generation failed");
+    return;
+  }
+  questions = d.quiz;
+  document.getElementById("quizBox").classList.remove("hidden");
+  showQuestion();
+})
+.catch(()=>{
+  alert("Server error while loading quiz");
 });
 
-function loadQuestion(){
-  const q = questions[current];
-  document.getElementById("question").innerText = `${current+1}. ${q.question}`;
+/* ================= SHOW QUESTION ================= */
+function showQuestion(){
+  selected = null;
+  document.getElementById("nextBtn").disabled = true;
 
-  const opts = document.querySelectorAll(".option");
-  opts.forEach((btn,i)=>{
-    btn.innerText = q.options[i];
-    btn.onclick = ()=>selectAnswer(i);
+  const q = questions[index];
+  document.getElementById("questionText").innerText =
+    `${index+1}. ${q.question}`;
+
+  const optBox = document.getElementById("options");
+  optBox.innerHTML = "";
+
+  Object.keys(q.options).forEach(key=>{
+    const div = document.createElement("div");
+    div.className = "option";
+    div.innerText = `${key}. ${q.options[key]}`;
+    div.onclick = ()=>{
+      document.querySelectorAll(".option")
+        .forEach(o=>o.classList.remove("selected"));
+      div.classList.add("selected");
+      selected = key;
+      document.getElementById("nextBtn").disabled = false;
+    };
+    optBox.appendChild(div);
   });
 }
 
-function selectAnswer(i){
-  if(i === questions[current].answer) score++;
-  current++;
+/* ================= NEXT ================= */
+document.getElementById("nextBtn").onclick = ()=>{
+  if(selected === questions[index].answer){
+    score++;
+  }
+  index++;
 
-  if(current < questions.length){
-    loadQuestion();
-  } else {
+  if(index < TOTAL_QUESTIONS){
+    showQuestion();
+  }else{
     showResult();
   }
-}
+};
 
+/* ================= RESULT ================= */
 function showResult(){
-  const percent = (score / questions.length) * 100;
-  alert(`Score: ${percent}%`);
+  document.getElementById("quizBox").classList.add("hidden");
+  document.getElementById("resultBox").classList.remove("hidden");
+
+  const percent = Math.round((score/TOTAL_QUESTIONS)*100);
+  document.getElementById("scoreText").innerText =
+    `Score: ${score}/${TOTAL_QUESTIONS} (${percent}%)`;
 
   if(percent >= 50){
-    alert("🎉 Certificate unlocked!");
+    document.getElementById("resultText").innerText =
+      "🎉 Congratulations! You Passed";
+    // certificate logic can be added here
+  }else{
+    document.getElementById("resultText").innerText =
+      "❌ You did not pass. Try again.";
   }
 }
 </script>
 
 </body>
 </html>
-
-
