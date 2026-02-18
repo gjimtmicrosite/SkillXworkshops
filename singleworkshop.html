@@ -14,13 +14,7 @@
   --bg:#f6f6f6;
   --card:#ffffff;
 }
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Poppins',sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
 
 body{
   min-height:100vh;
@@ -38,7 +32,6 @@ header{
   z-index:1000;
   box-shadow:0 2px 10px rgba(0,0,0,.08);
 }
-
 .navbar{
   max-width:1200px;
   margin:auto;
@@ -47,9 +40,7 @@ header{
   justify-content:space-between;
   align-items:center;
 }
-
-.logos img{height:46px;}
-
+.logos img{height:46px}
 nav a{
   text-decoration:none;
   margin-left:22px;
@@ -57,7 +48,6 @@ nav a{
   font-weight:500;
   position:relative;
 }
-
 nav a::after{
   content:"";
   position:absolute;
@@ -68,9 +58,9 @@ nav a::after{
   background:var(--primary);
   transition:.3s;
 }
-nav a:hover::after{width:100%;}
+nav a:hover::after{width:100%}
 
-/* ===== PAGE CENTER ===== */
+/* ===== PAGE ===== */
 .page{
   min-height:calc(100vh - 80px);
   display:flex;
@@ -89,19 +79,18 @@ nav a:hover::after{width:100%;}
   overflow:hidden;
 }
 
-/* CARD HEADER */
+/* HEADER */
 .header{
   background:linear-gradient(135deg,var(--primary),#ff8a4c);
   color:#fff;
   padding:30px 25px;
   text-align:center;
 }
-.header h2{font-size:1.7rem;}
-.header p{font-size:.95rem;opacity:.95;}
+.header h2{font-size:1.7rem}
+.header p{font-size:.95rem;opacity:.95}
 
 /* FORM */
-form{padding:30px 28px 35px;}
-
+form{padding:30px 28px 35px}
 .section-title{
   font-size:1.05rem;
   font-weight:600;
@@ -110,8 +99,7 @@ form{padding:30px 28px 35px;}
 }
 
 /* INPUTS */
-.field{margin-bottom:16px;}
-
+.field{margin-bottom:16px}
 .field input,
 .field textarea,
 .field select{
@@ -121,11 +109,7 @@ form{padding:30px 28px 35px;}
   border:1px solid #ccc;
   font-size:.95rem;
 }
-
-textarea{
-  resize:none;
-  min-height:70px;
-}
+textarea{resize:none;min-height:70px}
 
 /* BUTTON */
 button{
@@ -157,11 +141,10 @@ button:hover{
 
 <body>
 
-<!-- ===== GLOBAL HEADER ===== -->
 <header>
   <div class="navbar">
     <div class="logos">
-      <img src="https://www.gjimt.ac.in/wp-content/uploads/2025/09/gjimt-logo.png" alt="GJIMT Logo">
+      <img src="https://www.gjimt.ac.in/wp-content/uploads/2025/09/gjimt-logo.png">
     </div>
     <nav>
       <a href="index.html">Home</a>
@@ -197,10 +180,14 @@ button:hover{
     </div>
 
     <div class="field">
+      <input type="email" id="email" placeholder="Email Address" required>
+    </div>
+
+    <div class="field">
       <textarea id="address" placeholder="Address"></textarea>
     </div>
 
-    <!-- SINGLE WORKSHOP -->
+    <!-- WORKSHOP -->
     <div class="section-title">Select Workshop</div>
 
     <div class="field">
@@ -237,7 +224,7 @@ button:hover{
 document.addEventListener("DOMContentLoaded", function () {
 
   const WEB_APP_URL =
-  "https://script.google.com/macros/s/AKfycbxJfdYxGkmXWz4uGiCNh4lAMs3WTB37YLG72m1UaRNTPVOdr2NLB_9qczQsxaU796A/exec";
+  "https://script.google.com/macros/s/AKfycbyk6e___HJR5AaUuyYWktEOV7lvqVsm9f3LaASQqiKI_Omx0PnF2MvjmpDTBluVEYE/exec"
 
   const form = document.getElementById("singleWorkshopForm");
 
@@ -249,12 +236,13 @@ document.addEventListener("DOMContentLoaded", function () {
     fd.append("name", document.getElementById("name").value);
     fd.append("class", document.getElementById("className").value);
     fd.append("mobile", document.getElementById("mobile").value);
+    fd.append("email", document.getElementById("email").value); // ✅ EMAIL
     fd.append("address", document.getElementById("address").value);
     fd.append("workshop", document.getElementById("singleWorkshop").value);
 
     fetch(WEB_APP_URL, {
       method: "POST",
-      body: fd   // ✅ NO headers
+      body: fd
     })
     .then(res => res.text())
     .then(txt => {
