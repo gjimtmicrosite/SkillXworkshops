@@ -109,6 +109,17 @@ function logout(){
   location.href="login.html";
 }
 </script>
+<script>
+const student = JSON.parse(localStorage.getItem("student"));
+
+if(!student){
+  window.location.href = "login.html";
+}
+
+document.getElementById("studentName").innerText = student.name;
+document.getElementById("workshopName").innerText = student.workshop;
+</script>
 
 </body>
 </html>
+
