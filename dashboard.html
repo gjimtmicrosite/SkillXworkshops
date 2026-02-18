@@ -145,9 +145,11 @@ h1{
 /* ---------------- STUDENT LOAD ---------------- */
 const student = JSON.parse(localStorage.getItem("student"));
 
-if(!student){
+if (!student) {
+  alert("Session expired. Please login again.");
   window.location.href = "login.html";
 }
+
 
 document.getElementById("welcome").innerText = `Welcome ${student.name}`;
 document.getElementById("workshop").innerText = student.workshop;
@@ -206,5 +208,6 @@ function logout(){
 
 </body>
 </html>
+
 
 
