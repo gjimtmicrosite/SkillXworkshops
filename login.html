@@ -1,39 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SkillX Student Login | GJIMT</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#7b2cbf,#240046);
+}
+.login-box{
+  background:#fff;
+  width:360px;
+  padding:35px 30px;
+  border-radius:14px;
+  box-shadow:0 20px 40px rgba(0,0,0,0.25);
+}
+.login-box h2{
+  text-align:center;
+  color:#7b2cbf;
+  margin-bottom:25px;
+}
+input{
+  width:100%;
+  padding:12px;
+  margin-bottom:15px;
+  border:1px solid #ccc;
+  border-radius:6px;
+  font-size:15px;
+}
+button{
+  width:100%;
+  padding:12px;
+  background:#7b2cbf;
+  color:#fff;
+  border:none;
+  border-radius:6px;
+  font-size:16px;
+  cursor:pointer;
+}
+button:hover{
+  background:#5a189a;
+}
+#error{
+  margin-top:15px;
+  text-align:center;
+  color:red;
+  font-size:14px;
+}
+.footer-text{
+  text-align:center;
+  margin-top:20px;
+  font-size:13px;
+  color:#666;
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-box">
+  <h2>Student Login</h2>
+
+  <input type="text" id="username" placeholder="Username">
+  <input type="password" id="password" placeholder="Password">
+
+  <button onclick="login()">Login</button>
+
+  <div id="error"></div>
+
+  <div class="footer-text">
+    GJIMT SkillX Dashboard
+  </div>
+</div>
+
 <script>
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzKeehk1UXoe9UaWPhjHlh4qNY-5F2QvzfJjkYLklWefvwt7OTDwvV_xugWiQHWcZQ/exec";
+const WEB_APP_URL =
+"https://script.google.com/macros/s/AKfycbyTQZ1LTSEzYIMRevdYLyiVjU0qS5k4ERQkXnwpoxNGmFhfTTl7j8SI4LJtMcin_bw/exec";
 
 function login(){
-  document.getElementById("error").innerText = "";
+  const errorBox = document.getElementById("error");
+  errorBox.innerText = "";
 
   const username = document.getElementById("username").value.trim();
   const password = document.getElementById("password").value.trim();
 
   if(!username || !password){
-    document.getElementById("error").innerText = "Please enter username & password";
+    errorBox.innerText = "Please enter username and password";
     return;
   }
 
   const formData = new URLSearchParams();
-  formData.append("action", "login");
-  formData.append("username", username);
-  formData.append("password", password);
+  formData.append("action","login");
+  formData.append("username",username);
+  formData.append("password",password);
 
-  fetch(WEB_APP_URL, {
-    method: "POST",
-    body: formData
+  fetch(WEB_APP_URL,{
+    method:"POST",
+    body:formData
   })
   .then(res => res.json())
   .then(data => {
     if(data.success){
       localStorage.setItem("student", JSON.stringify(data.student));
       window.location.href = "dashboard.html";
-    } else {
-      document.getElementById("error").innerText = "Invalid username or password";
+    }else{
+      errorBox.innerText = "Invalid username or password";
     }
   })
-  .catch(err => {
-    console.error(err);
-    document.getElementById("error").innerText = "Server Error. Please try again.";
+  .catch(() => {
+    errorBox.innerText = "Server error. Please try again.";
   });
 }
 </script>
 
+</body>
+</html>
