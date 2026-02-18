@@ -151,9 +151,13 @@ footer span{
 
 <form id="workshopForm">
 
+<!-- BASIC DETAILS -->
 <div class="field"><input id="name" required placeholder="Student Name"></div>
 <div class="field"><input id="class" required placeholder="Class"></div>
-<div class="field"><input id="mobile" required placeholder="Mobile"></div>
+<div class="field"><input id="mobile" required placeholder="Mobile Number"></div>
+<div class="field">
+  <input id="email" type="email" required placeholder="Email Address">
+</div>
 <div class="field"><textarea id="address" placeholder="Address"></textarea></div>
 
 <!-- Priority 1 -->
@@ -211,7 +215,6 @@ const workshopMap = {
 const modules = document.querySelectorAll(".module");
 const workshops = document.querySelectorAll(".workshop");
 
-// Populate workshops
 modules.forEach((m, i) => {
   m.addEventListener("change", () => {
     const w = workshops[i];
@@ -229,7 +232,6 @@ workshops.forEach(w => w.addEventListener("change", lockDuplicates));
 
 function lockDuplicates() {
   const selected = [...workshops].map(w => w.value).filter(Boolean);
-
   workshops.forEach(current => {
     [...current.options].forEach(opt => {
       if (!opt.value) return;
@@ -238,9 +240,9 @@ function lockDuplicates() {
   });
 }
 
-// ✅ DEPLOYED WEB APP URL
+/* ✅ GOOGLE WEB APP URL */
 const WEB_APP_URL =
-  "https://script.google.com/macros/s/AKfycbwFMwtdvRiQwLkdYKJ60JcLp_X0VndPuPpCeAoagrhQSw9A_lT9gtNDCGN1RKKID6I/exec";
+"https://script.google.com/macros/s/AKfycbyk6e___HJR5AaUuyYWktEOV7lvqVsm9f3LaASQqiKI_Omx0PnF2MvjmpDTBluVEYE/exec";
 
 document.getElementById("workshopForm").addEventListener("submit", e => {
   e.preventDefault();
@@ -250,6 +252,7 @@ document.getElementById("workshopForm").addEventListener("submit", e => {
   fd.append("name", document.getElementById("name").value);
   fd.append("class", document.getElementById("class").value);
   fd.append("mobile", document.getElementById("mobile").value);
+  fd.append("email", document.getElementById("email").value); // ✅ EMAIL
   fd.append("address", document.getElementById("address").value);
 
   fd.append("p1Module", modules[0].value);
@@ -261,7 +264,7 @@ document.getElementById("workshopForm").addEventListener("submit", e => {
 
   fetch(WEB_APP_URL, {
     method: "POST",
-    body: fd   // 🚨 IMPORTANT: NO headers
+    body: fd
   })
   .then(res => res.text())
   .then(txt => {
@@ -275,8 +278,6 @@ document.getElementById("workshopForm").addEventListener("submit", e => {
   });
 });
 </script>
-
-
 
 </body>
 </html>
