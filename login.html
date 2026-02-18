@@ -1,164 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>SkillX | Student Login</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    body {
-      margin: 0;
-      height: 100vh;
-      background: linear-gradient(135deg, #4e54c8, #8f94fb);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .login-card {
-      background: #fff;
-      width: 100%;
-      max-width: 380px;
-      padding: 35px;
-      border-radius: 15px;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-      animation: slideUp 0.8s ease;
-    }
-
-    @keyframes slideUp {
-      from { transform: translateY(40px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    .login-card h2 {
-      text-align: center;
-      margin-bottom: 5px;
-      color: #333;
-    }
-
-    .login-card p {
-      text-align: center;
-      color: #777;
-      font-size: 14px;
-      margin-bottom: 25px;
-    }
-
-    .input-group {
-      margin-bottom: 18px;
-    }
-
-    .input-group input {
-      width: 100%;
-      padding: 12px 14px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 14px;
-      outline: none;
-      transition: 0.3s;
-    }
-
-    .input-group input:focus {
-      border-color: #4e54c8;
-      box-shadow: 0 0 0 2px rgba(78,84,200,0.2);
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      background: #4e54c8;
-      color: white;
-      font-size: 15px;
-      font-weight: 500;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      background: #3b40a4;
-    }
-
-    #msg {
-      margin-top: 15px;
-      text-align: center;
-      font-size: 14px;
-    }
-
-    .footer-text {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 12px;
-      color: #999;
-    }
-  </style>
+<title>SkillX Student Login</title>
+<style>
+body{
+  font-family:Poppins,Arial;
+  background:#f4f6fb;
+}
+.login-box{
+  width:360px;
+  margin:120px auto;
+  background:#fff;
+  padding:30px;
+  border-radius:14px;
+  box-shadow:0 20px 45px rgba(0,0,0,.15);
+}
+h2{text-align:center;color:#7b2cbf;}
+input,button{
+  width:100%;
+  padding:12px;
+  margin:12px 0;
+}
+button{
+  background:#7b2cbf;
+  color:#fff;
+  border:none;
+  cursor:pointer;
+}
+#msg{color:red;text-align:center;}
+</style>
 </head>
 
 <body>
 
-  <div class="login-card">
-    <h2>SkillX Login</h2>
-    <p>Student Dashboard Access</p>
+<div class="login-box">
+  <h2>Student Login</h2>
+  <input id="username" placeholder="Username">
+  <input id="password" type="password" placeholder="Password">
+  <button onclick="login()">Login</button>
+  <p id="msg"></p>
+</div>
 
-    <div class="input-group">
-      <input id="username" placeholder="Enter Username">
-    </div>
+<script>
+const WEB_APP_URL = "PASTE_YOUR_WEB_APP_URL_HERE";
 
-    <div class="input-group">
-      <input id="password" type="password" placeholder="Enter Password">
-    </div>
+function login(){
+  const fd = new FormData();
+  fd.append("username", document.getElementById("username").value);
+  fd.append("password", document.getElementById("password").value);
 
-    <button onclick="login()">Login</button>
-
-    <p id="msg"></p>
-
-    <div class="footer-text">
-      © 2026 SkillX Learning Platform
-    </div>
-  </div>
-
-  <script>
-    function login() {
-      document.getElementById("msg").innerText = "⏳ Checking credentials...";
-      document.getElementById("msg").style.color = "#555";
-
-      fetch("https://script.google.com/macros/s/AKfycbw-CADvGmxcDyvUXZk-WUrxiarmqdHPT5siK86T6-0j6RTlg6echL1TNET_z5vJVik/exec", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "login",
-          username: document.getElementById("username").value,
-          password: document.getElementById("password").value
-        })
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          sessionStorage.setItem("student", JSON.stringify(data));
-          document.getElementById("msg").style.color = "green";
-          document.getElementById("msg").innerText = "✅ Login successful! Redirecting...";
-          setTimeout(() => {
-            window.location.href = "dashboard.html";
-          }, 800);
-        } else {
-          document.getElementById("msg").style.color = "red";
-          document.getElementById("msg").innerText = "❌ Invalid username or password";
-        }
-      })
-      .catch(() => {
-        document.getElementById("msg").style.color = "red";
-        document.getElementById("msg").innerText = "⚠️ Server error. Try again later.";
-      });
+  fetch(WEB_APP_URL,{
+    method:"POST",
+    body:fd
+  })
+  .then(res=>res.json())
+  .then(data=>{
+    if(data.status==="SUCCESS"){
+      sessionStorage.setItem("student",JSON.stringify(data));
+      window.location.href="dashboard.html";
+    }else{
+      document.getElementById("msg").innerText="❌ Invalid Username or Password";
     }
-  </script>
+  })
+  .catch(()=>{
+    document.getElementById("msg").innerText="⚠ Server Error";
+  });
+}
+</script>
 
 </body>
 </html>
