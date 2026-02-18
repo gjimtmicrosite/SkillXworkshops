@@ -189,13 +189,12 @@ function closeModal(){
 function startQuiz(level){
 
   localStorage.setItem("quizSettings", JSON.stringify({
-    day: selectedDay,
-    level: level,
-    workshop: student.workshop
-  }));
+  day: 1,
+  level: "simple",
+  workshop: student.workshop
+}));
+window.location.href = "quiz.html";
 
-  window.location.href = "quiz.html";
-}
 
 /* ---------------- LOGOUT ---------------- */
 function logout(){
@@ -206,3 +205,4 @@ function logout(){
 
 </body>
 </html>
+
