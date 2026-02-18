@@ -59,7 +59,7 @@ button{
 </div>
 
 <script>
-const s = JSON.parse(sessionStorage.getItem("student"));
+const s = JSON.parse(localStorage.getItem("student"));
 
 if(!s){
   window.location.href="login.html";
@@ -80,7 +80,7 @@ document.getElementById("p3w").innerText=s.p3Workshop;
 document.getElementById("single").innerText=s.singleWorkshop;
 
 function logout(){
-  sessionStorage.clear();
+  localStorage.clear();
   window.location.href="login.html";
 }
 </script>
