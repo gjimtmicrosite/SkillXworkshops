@@ -5,14 +5,9 @@
 <title>SkillX Student Login | GJIMT</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Google Font -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-*{
-  box-sizing:border-box;
-  font-family:'Poppins',sans-serif;
-}
 body{
   margin:0;
   height:100vh;
@@ -20,26 +15,22 @@ body{
   align-items:center;
   justify-content:center;
   background:linear-gradient(135deg,#7b2cbf,#240046);
+  font-family:'Poppins',sans-serif;
 }
 .login-box{
   background:#fff;
   width:360px;
-  padding:35px 30px;
+  padding:35px;
   border-radius:14px;
-  box-shadow:0 20px 40px rgba(0,0,0,0.25);
+  box-shadow:0 20px 40px rgba(0,0,0,.25);
 }
-.login-box h2{
-  text-align:center;
-  color:#7b2cbf;
-  margin-bottom:25px;
-}
+h2{text-align:center;color:#7b2cbf;margin-bottom:25px;}
 input{
   width:100%;
   padding:12px;
   margin-bottom:15px;
   border:1px solid #ccc;
   border-radius:6px;
-  font-size:15px;
 }
 button{
   width:100%;
@@ -51,21 +42,8 @@ button{
   font-size:16px;
   cursor:pointer;
 }
-button:hover{
-  background:#5a189a;
-}
-#error{
-  margin-top:15px;
-  text-align:center;
-  color:red;
-  font-size:14px;
-}
-.footer-text{
-  text-align:center;
-  margin-top:20px;
-  font-size:13px;
-  color:#666;
-}
+button:hover{background:#5a189a;}
+#error{text-align:center;color:red;margin-top:15px;}
 </style>
 </head>
 
@@ -74,21 +52,16 @@ button:hover{
 <div class="login-box">
   <h2>Student Login</h2>
 
-  <input type="text" id="username" placeholder="Username">
-  <input type="password" id="password" placeholder="Password">
+  <input id="username" placeholder="Username">
+  <input id="password" type="password" placeholder="Password">
 
   <button onclick="login()">Login</button>
-
   <div id="error"></div>
-
-  <div class="footer-text">
-    GJIMT SkillX Dashboard
-  </div>
 </div>
 
 <script>
 const WEB_APP_URL =
-"https://script.google.com/macros/s/AKfycbzSR30zJZd8ADw2RowMLvSibPfFR-mHlKrZ4kK6QoWGjbQHTAyl5NSKcileIuP5LAE/exec";
+"https://script.google.com/macros/s/AKfycbwJM_02DtlbWoDFpka6LuqDeSE_d8M5sqjbCpvC9H6b9F7L1jweVT3k6DnQEBMSddE/exec";
 
 function login(){
   const errorBox = document.getElementById("error");
@@ -114,13 +87,14 @@ function login(){
   .then(res => res.json())
   .then(data => {
     if(data.success){
+      // ✅ STORE IN localStorage
       localStorage.setItem("student", JSON.stringify(data.student));
       window.location.href = "dashboard.html";
-    }else{
+    } else {
       errorBox.innerText = "Invalid username or password";
     }
   })
-  .catch(() => {
+  .catch(()=>{
     errorBox.innerText = "Server error. Please try again.";
   });
 }
@@ -128,5 +102,3 @@ function login(){
 
 </body>
 </html>
-
-
