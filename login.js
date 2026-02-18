@@ -1,4 +1,4 @@
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzKeehk1UXoe9UaWPhjHlh4qNY-5F2QvzfJjkYLklWefvwt7OTDwvV_xugWiQHWcZQ/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw-I-qnmmlSpd7HGwaxpk05NwLlFWW97hTI5VoODeQiHLAVA9kb_K-AYkAC5Wgugw/exec";
 
 function login(){
   const errorBox = document.getElementById("error");
@@ -35,3 +35,4 @@ function login(){
     errorBox.innerText = "Server error. Please try again.";
   });
 }
+
