@@ -42,7 +42,10 @@ button{
   border-radius:6px;
   cursor:pointer;
 }
-.hidden{display:none}
+button:disabled{
+  background:#bbb;
+  cursor:not-allowed;
+}
 </style>
 </head>
 
@@ -52,15 +55,13 @@ button{
   <h2 id="title"></h2>
   <p id="question"></p>
   <div id="options"></div>
-  <button onclick="next()">Next</button>
+  <button id="nextBtn" onclick="next()" disabled>Next</button>
 </div>
 
 <script>
 const WEB_APP_URL = "YOUR_APPS_SCRIPT_WEB_APP_URL";
 
 const quizInfo = JSON.parse(localStorage.getItem("currentQuiz"));
-const student = JSON.parse(localStorage.getItem("student"));
-
 let questions=[], index=0, score=0, selected=null;
 
 document.getElementById("title").innerText =
@@ -81,34 +82,38 @@ fetch(WEB_APP_URL,{
 });
 
 function render(){
+  selected=null;
+  document.getElementById("nextBtn").disabled = true;
+
   const q=questions[index];
   document.getElementById("question").innerText =
     `${index+1}. ${q.q}`;
 
   const optDiv=document.getElementById("options");
   optDiv.innerHTML="";
+
   q.options.forEach((o,i)=>{
     const d=document.createElement("div");
     d.className="option";
     d.innerText=o;
+
     d.onclick=()=>{
       document.querySelectorAll(".option")
         .forEach(x=>x.classList.remove("selected"));
       d.classList.add("selected");
       selected=i;
+      document.getElementById("nextBtn").disabled = false;
     };
+
     optDiv.appendChild(d);
   });
 }
 
 function next(){
-  if(selected===null) return alert("Select an option");
-
-  if(selected===questions[index].answer) score++;
-  selected=null;
+  if(selected === questions[index].answer) score++;
   index++;
 
-  if(index<questions.length){
+  if(index < questions.length){
     render();
   }else{
     finish();
@@ -117,17 +122,17 @@ function next(){
 
 function finish(){
   const percent = (score/questions.length)*100;
-  alert(`Score: ${percent}%`);
+  alert(`Quiz Completed!\nScore: ${percent.toFixed(2)}%`);
 
   let progress = JSON.parse(localStorage.getItem("quizProgress")) || {
     day:1,
     completed:{}
   };
 
-  if(percent>=50){
+  if(percent >= 50){
     progress.completed[
       `${quizInfo.day}-${quizInfo.level}`
-    ]=true;
+    ] = true;
 
     const levels=["simple","moderate","expert"];
     const allDone = levels.every(l =>
@@ -135,7 +140,7 @@ function finish(){
     );
 
     if(allDone){
-      progress.day = Math.max(progress.day, quizInfo.day+1);
+      progress.day = Math.max(progress.day, quizInfo.day + 1);
     }
   }
 
