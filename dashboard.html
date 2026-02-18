@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Student Dashboard</title>
+<style>
+body{
+  font-family:Poppins,Arial;
+  background:#eef1ff;
+}
+.dashboard{
+  max-width:750px;
+  margin:70px auto;
+  background:#fff;
+  padding:35px;
+  border-radius:18px;
+}
+h2{color:#7b2cbf;}
+.section{
+  margin-top:20px;
+  padding:15px;
+  background:#f4f6fb;
+  border-radius:10px;
+}
+button{
+  margin-top:20px;
+  padding:10px 20px;
+  background:#7b2cbf;
+  color:#fff;
+  border:none;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="dashboard">
+  <h2>Welcome, <span id="name"></span></h2>
+
+  <div class="section">
+    <p><strong>Registration Type:</strong> <span id="reg"></span></p>
+    <p><strong>Class:</strong> <span id="class"></span></p>
+    <p><strong>Email:</strong> <span id="email"></span></p>
+    <p><strong>Mobile:</strong> <span id="mobile"></span></p>
+  </div>
+
+  <div class="section">
+    <h3>Selected Modules & Workshops</h3>
+    <p>P1 Module: <span id="p1m"></span></p>
+    <p>P1 Workshop: <span id="p1w"></span></p>
+    <p>P2 Module: <span id="p2m"></span></p>
+    <p>P2 Workshop: <span id="p2w"></span></p>
+    <p>P3 Module: <span id="p3m"></span></p>
+    <p>P3 Workshop: <span id="p3w"></span></p>
+    <p>Single Workshop: <span id="single"></span></p>
+  </div>
+
+  <button onclick="logout()">Logout</button>
+</div>
+
+<script>
+const s = JSON.parse(sessionStorage.getItem("student"));
+
+if(!s){
+  window.location.href="login.html";
+}
+
+document.getElementById("name").innerText=s.name;
+document.getElementById("reg").innerText=s.registrationType;
+document.getElementById("class").innerText=s.className;
+document.getElementById("email").innerText=s.email;
+document.getElementById("mobile").innerText=s.mobile;
+
+document.getElementById("p1m").innerText=s.p1Module;
+document.getElementById("p1w").innerText=s.p1Workshop;
+document.getElementById("p2m").innerText=s.p2Module;
+document.getElementById("p2w").innerText=s.p2Workshop;
+document.getElementById("p3m").innerText=s.p3Module;
+document.getElementById("p3w").innerText=s.p3Workshop;
+document.getElementById("single").innerText=s.singleWorkshop;
+
+function logout(){
+  sessionStorage.clear();
+  window.location.href="login.html";
+}
+</script>
+
+</body>
+</html>
