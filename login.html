@@ -1,33 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
 <title>SkillX Student Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
 <style>
 body{
-  font-family:Poppins,Arial;
-  background:#f4f6fb;
+  font-family:'Poppins',sans-serif;
+  background:linear-gradient(135deg,#7b2cbf,#240046);
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
 .login-box{
-  width:360px;
-  margin:120px auto;
   background:#fff;
-  padding:30px;
+  width:360px;
+  padding:35px;
   border-radius:14px;
-  box-shadow:0 20px 45px rgba(0,0,0,.15);
+  box-shadow:0 20px 40px rgba(0,0,0,.2);
 }
-h2{text-align:center;color:#7b2cbf;}
-input,button{
+h2{
+  text-align:center;
+  color:#7b2cbf;
+  margin-bottom:25px;
+}
+input{
   width:100%;
   padding:12px;
-  margin:12px 0;
+  margin-bottom:15px;
+  border:1px solid #ccc;
+  border-radius:6px;
+  font-size:15px;
 }
 button{
+  width:100%;
+  padding:12px;
   background:#7b2cbf;
-  color:#fff;
+  color:white;
   border:none;
+  font-size:16px;
+  border-radius:6px;
   cursor:pointer;
 }
-#msg{color:red;text-align:center;}
+button:hover{
+  background:#5a189a;
+}
+#error{
+  margin-top:15px;
+  color:red;
+  text-align:center;
+}
 </style>
 </head>
 
@@ -35,35 +61,52 @@ button{
 
 <div class="login-box">
   <h2>Student Login</h2>
-  <input id="username" placeholder="Username">
-  <input id="password" type="password" placeholder="Password">
+
+  <input type="text" id="username" placeholder="Username" required>
+  <input type="password" id="password" placeholder="Password" required>
+
   <button onclick="login()">Login</button>
-  <p id="msg"></p>
+
+  <div id="error"></div>
 </div>
 
 <script>
-const WEB_APP_URL = "PASTE_YOUR_WEB_APP_URL_HERE";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwhnM6Gh7gEaIgVnHpP8aIunbnyGleMw_RzPGNSnwc7lbqAXLIV--FJlOfoii00cig/exec";
 
 function login(){
-  const fd = new FormData();
-  fd.append("username", document.getElementById("username").value);
-  fd.append("password", document.getElementById("password").value);
+  document.getElementById("error").innerText = "";
+
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  if(!username || !password){
+    document.getElementById("error").innerText = "Please enter username & password";
+    return;
+  }
 
   fetch(WEB_APP_URL,{
     method:"POST",
-    body:fd
+    headers:{
+      "Content-Type":"application/json"
+    },
+    body:JSON.stringify({
+      action:"login",
+      username:username,
+      password:password
+    })
   })
-  .then(res=>res.json())
-  .then(data=>{
-    if(data.status==="SUCCESS"){
-      sessionStorage.setItem("student",JSON.stringify(data));
-      window.location.href="dashboard.html";
+  .then(res => res.json())
+  .then(data => {
+    if(data.success){
+      localStorage.setItem("student", JSON.stringify(data.student));
+      window.location.href = "dashboard.html";
     }else{
-      document.getElementById("msg").innerText="❌ Invalid Username or Password";
+      document.getElementById("error").innerText = "Invalid username or password";
     }
   })
-  .catch(()=>{
-    document.getElementById("msg").innerText="⚠ Server Error";
+  .catch(err=>{
+    console.error(err);
+    document.getElementById("error").innerText = "Server Error. Please try again.";
   });
 }
 </script>
