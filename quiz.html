@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>SkillX Quiz</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
 body{
@@ -11,7 +11,7 @@ body{
   margin:0;
 }
 .quiz-box{
-  max-width:800px;
+  max-width:850px;
   margin:40px auto;
   background:#fff;
   padding:30px;
@@ -26,16 +26,14 @@ h2{color:#6a1b9a}
   border-radius:6px;
   cursor:pointer;
 }
-.option:hover{
-  background:#ede7f6;
-}
+.option:hover{background:#ede7f6}
 .option.selected{
   background:#6a1b9a;
   color:#fff;
 }
 button{
   margin-top:20px;
-  padding:12px 20px;
+  padding:12px 22px;
   background:#6a1b9a;
   color:#fff;
   border:none;
@@ -59,35 +57,42 @@ button:disabled{
 </div>
 
 <script>
-const WEB_APP_URL = "YOUR_APPS_SCRIPT_WEB_APP_URL";
-
+// ================== QUIZ CONTEXT ==================
 const quizInfo = JSON.parse(localStorage.getItem("currentQuiz"));
 let questions=[], index=0, score=0, selected=null;
 
 document.getElementById("title").innerText =
-  `${quizInfo.workshop} | Day ${quizInfo.day} | ${quizInfo.level.toUpperCase()}`;
+`${quizInfo.workshop} | Day ${quizInfo.day} | ${quizInfo.level.toUpperCase()}`;
 
-fetch(WEB_APP_URL,{
-  method:"POST",
-  body:new URLSearchParams({
-    action:"quiz",
-    workshop:quizInfo.workshop,
-    level:quizInfo.level
-  })
-})
-.then(res=>res.json())
-.then(data=>{
-  questions=data.questions;
-  render();
-});
+// ================== AUTO QUESTION GENERATOR ==================
+function generateQuestions(){
+  const baseTopic = quizInfo.workshop;
+  for(let i=1;i<=20;i++){
+    questions.push({
+      q:`(${quizInfo.level.toUpperCase()}) Q${i}: What is an important concept of ${baseTopic}?`,
+      options:[
+        "Correct concept",
+        "Wrong option 1",
+        "Wrong option 2",
+        "Wrong option 3"
+      ],
+      answer:0
+    });
+  }
+}
 
+// ================== START QUIZ ==================
+generateQuestions();
+render();
+
+// ================== RENDER ==================
 function render(){
   selected=null;
-  document.getElementById("nextBtn").disabled = true;
+  document.getElementById("nextBtn").disabled=true;
 
   const q=questions[index];
   document.getElementById("question").innerText =
-    `${index+1}. ${q.q}`;
+  `${index+1}. ${q.q}`;
 
   const optDiv=document.getElementById("options");
   optDiv.innerHTML="";
@@ -102,13 +107,14 @@ function render(){
         .forEach(x=>x.classList.remove("selected"));
       d.classList.add("selected");
       selected=i;
-      document.getElementById("nextBtn").disabled = false;
+      document.getElementById("nextBtn").disabled=false;
     };
 
     optDiv.appendChild(d);
   });
 }
 
+// ================== NEXT ==================
 function next(){
   if(selected === questions[index].answer) score++;
   index++;
@@ -120,27 +126,24 @@ function next(){
   }
 }
 
+// ================== FINISH ==================
 function finish(){
-  const percent = (score/questions.length)*100;
+  const percent=(score/questions.length)*100;
   alert(`Quiz Completed!\nScore: ${percent.toFixed(2)}%`);
 
-  let progress = JSON.parse(localStorage.getItem("quizProgress")) || {
+  let progress=JSON.parse(localStorage.getItem("quizProgress"))||{
     day:1,
     completed:{}
   };
 
-  if(percent >= 50){
+  if(percent>=50){
     progress.completed[
       `${quizInfo.day}-${quizInfo.level}`
-    ] = true;
+    ]=true;
 
     const levels=["simple","moderate","expert"];
-    const allDone = levels.every(l =>
-      progress.completed[`${quizInfo.day}-${l}`]
-    );
-
-    if(allDone){
-      progress.day = Math.max(progress.day, quizInfo.day + 1);
+    if(levels.every(l=>progress.completed[`${quizInfo.day}-${l}`])){
+      progress.day=Math.max(progress.day,quizInfo.day+1);
     }
   }
 
