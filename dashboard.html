@@ -56,28 +56,45 @@
 </head>
 
 <body>
+<div class="content">
+  <div class="card">
+    <h2 id="studentName"></h2>
+    <p><b>Workshop:</b> <span id="workshopName"></span></p>
 
-  <div class="sidebar">
-    <h2>🎓 SkillX</h2>
-    <button onclick="startQuiz()">Start Quiz</button>
-    <button onclick="logout()">Logout</button>
+    <h3>5-Day Quiz Plan</h3>
+    <div id="days"></div>
   </div>
-
-  <div class="content">
-    <div class="card">
-      <h2 id="studentName">Welcome</h2>
-      <p><b>Workshop:</b> <span id="workshopName"></span></p>
-    </div>
-  </div>
+</div>
 
 <script>
+const student = JSON.parse(localStorage.getItem("student"));
 
-  const daysContainer = document.getElementById("days");
+if(!student){
+  alert("Session expired");
+  window.location.href = "login.html";
+}
 
-for (let d = 1; d <= 5; d++) {
+document.getElementById("studentName").innerText =
+  "Welcome " + student.name;
+
+document.getElementById("workshopName").innerText =
+  student.workshop;
+
+const daysDiv = document.getElementById("days");
+
+for(let d=1; d<=5; d++){
+  const dayKey = "day"+d;
+
   const btn = document.createElement("button");
   btn.innerText = "Day " + d;
-  btn.className = "day-btn";
+
+  // unlock rule
+  if(d === 1 ||
+     student.progress["day"+(d-1)].hard){
+    btn.disabled = false;
+  } else {
+    btn.disabled = true;
+  }
 
   btn.onclick = () => {
     localStorage.setItem("quizSettings", JSON.stringify({
@@ -88,41 +105,12 @@ for (let d = 1; d <= 5; d++) {
     window.location.href = "quiz.html";
   };
 
-  daysContainer.appendChild(btn);
+  daysDiv.appendChild(btn);
 }
-
-  console.log("Dashboard loaded");
-
-  const studentRaw = localStorage.getItem("student");
-
-  if (!studentRaw) {
-    alert("Session expired. Please login again.");
-    window.location.href = "login.html";
-  }
-
-  const student = JSON.parse(studentRaw);
-
-  document.getElementById("studentName").innerText =
-    "Welcome " + (student.name || "Student");
-
-  document.getElementById("workshopName").innerText =
-    student.workshop || "Not Assigned";
-
-  function startQuiz() {
-    localStorage.setItem("quizSettings", JSON.stringify({
-      day: 1,
-      level: "simple",
-      workshop: student.workshop
-    }));
-    window.location.href = "quiz.html";
-  }
-
-  function logout() {
-    localStorage.clear();
-    window.location.href = "login.html";
-  }
 </script>
+
 
 </body>
 </html>
+
 
