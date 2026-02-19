@@ -84,24 +84,33 @@ function login(){
     method:"POST",
     body:formData
   })
-  .then(res => res.json())
-  .then(data => {
-    if(data.success){
-      // ✅ STORE IN localStorage
-      localStorage.setItem("student", JSON.stringify(data.student));
-      window.location.href = "dashboard.html";
-    } else {
-      errorBox.innerText = "Invalid username or password";
-    }
-  })
-  .catch(()=>{
-    errorBox.innerText = "Server error. Please try again.";
-  });
+ .then(data => {
+  if(data.success){
+
+    // initialize progress
+    data.student.progress = {
+      day1:{simple:false,medium:false,hard:false},
+      day2:{simple:false,medium:false,hard:false},
+      day3:{simple:false,medium:false,hard:false},
+      day4:{simple:false,medium:false,hard:false},
+      day5:{simple:false,medium:false,hard:false}
+    };
+
+    data.student.results = [];
+
+    localStorage.setItem("student", JSON.stringify(data.student));
+    window.location.href = "dashboard.html";
+  } else {
+    errorBox.innerText = "Invalid username or password";
+  }
+});
+
 }
 </script>
 
 </body>
 </html>
+
 
 
 
