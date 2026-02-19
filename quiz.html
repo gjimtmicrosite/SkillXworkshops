@@ -11,6 +11,20 @@
 <div id="quiz"></div>
 
 <script>
+  const student = JSON.parse(localStorage.getItem("student"));
+const qs = JSON.parse(localStorage.getItem("quizSettings"));
+
+student.progress["day"+qs.day][qs.level] = true;
+
+student.results.push({
+  day: qs.day,
+  level: qs.level,
+  score: score,
+  total: total
+});
+
+localStorage.setItem("student", JSON.stringify(student));
+
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxH0MV7juBdM1RVtcIRKomk5W2qP2ZwAwW1IXRhMYK4ErSZ2A45Z5F1PO7ikXe8TYw/exec";
 
 const student = JSON.parse(localStorage.getItem("student"));
@@ -58,5 +72,6 @@ fetch(WEB_APP_URL, {
 
 </body>
 </html>
+
 
 
