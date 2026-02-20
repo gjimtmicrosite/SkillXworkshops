@@ -212,7 +212,36 @@
       font-weight:600;
       text-decoration:none;
     }
+/* WORKSHOP GRID */
+.workshop-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:14px;
+  margin-top:10px;
+}
 
+/* WORKSHOP CHIP */
+.workshop-chip{
+  padding:14px 16px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#f26522,#ff9b5a);
+  color:#fff;
+  font-weight:600;
+  text-align:center;
+  cursor:pointer;
+  transition:.3s;
+  box-shadow:0 6px 16px rgba(0,0,0,.15);
+}
+
+.workshop-chip:hover{
+  transform:translateY(-4px) scale(1.02);
+}
+
+/* SELECTED */
+.workshop-chip.active{
+  background:linear-gradient(135deg,#1f1f1f,#000);
+  box-shadow:0 8px 20px rgba(0,0,0,.3);
+}
     footer{
       background:var(--dark);
       color:#ccc;
@@ -313,21 +342,27 @@
     <div id="singleView" style="display:none">
       <h2 class="section-title">Available SkillX Workshops</h2>
 
-      <div class="single-workshop">
-       AI-Enabled Learning
-        Excel & Power BI
-        Web Development
-        Information Security
-       Cloud Computing
-       Functional English
-       Public Speaking
-        Canva Editing
-       AI for Business
-   Resume & LinkedIn
-   Tally
-Prompt Engineering
-       Vedic Maths
-      </div>
+     <!-- Hidden select (used for form submission) -->
+<select id="singleWorkshop" required style="display:none;">
+  <option value="">-- Select Workshop --</option>
+</select>
+
+<!-- Workshop Grid -->
+<div class="workshop-grid">
+  <div class="workshop-chip" data-value="AI – Enabled Learning">AI-Enabled Learning</div>
+  <div class="workshop-chip" data-value="Excel Essentials + Power BI">Excel & Power BI</div>
+  <div class="workshop-chip" data-value="Web Development">Web Development</div>
+  <div class="workshop-chip" data-value="Information Security">Information Security</div>
+  <div class="workshop-chip" data-value="Cloud Computing">Cloud Computing</div>
+  <div class="workshop-chip" data-value="Functional English">Functional English</div>
+  <div class="workshop-chip" data-value="Public Speaking">Public Speaking</div>
+  <div class="workshop-chip" data-value="Canva Photo & Video Editing">Canva Editing</div>
+  <div class="workshop-chip" data-value="AI for Business Decision-Making">AI for Business</div>
+  <div class="workshop-chip" data-value="Resume & LinkedIn Optimization">Resume & LinkedIn</div>
+  <div class="workshop-chip" data-value="Tally Accounting Basics">Tally Basics</div>
+  <div class="workshop-chip" data-value="Prompt Engineering">Prompt Engineering</div>
+  <div class="workshop-chip" data-value="Vedic Maths">Vedic Maths</div>
+</div>
 
       <div style="text-align:center">
         <a href="singleworkshop.html?type=single" class="blink-enroll">Enroll for Single Workshop</a>
@@ -336,7 +371,27 @@ Prompt Engineering
 
   </div>
 </section>
+<script>
+const chips = document.querySelectorAll(".workshop-chip");
+const hiddenSelect = document.getElementById("singleWorkshop");
 
+// Populate hidden select automatically
+chips.forEach(chip => {
+  const opt = document.createElement("option");
+  opt.value = chip.dataset.value;
+  opt.textContent = chip.dataset.value;
+  hiddenSelect.appendChild(opt);
+});
+
+// Handle click
+chips.forEach(chip => {
+  chip.addEventListener("click", () => {
+    chips.forEach(c => c.classList.remove("active"));
+    chip.classList.add("active");
+    hiddenSelect.value = chip.dataset.value;
+  });
+});
+</script>
 <section class="cta" id="contact">
   <h2>Ready to Become a Hero?</h2>
   <p>Under our Zero to Hero SkillX Program</p>
@@ -349,6 +404,7 @@ Prompt Engineering
 
 </body>
 </html>
+
 
 
 
