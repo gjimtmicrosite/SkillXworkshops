@@ -188,7 +188,72 @@ section{padding:70px 20px;}
   left:0;
   color:var(--accent);
 }
+/* HEADER */
+.header{
+  width:100%;
+  background:#fff;
+  box-shadow:0 2px 10px rgba(0,0,0,.08);
+}
 
+/* NAVBAR */
+.navbar{
+  max-width:1200px;
+  margin:auto;
+  padding:10px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+/* LOGOS */
+.logos{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.logo{
+  height:55px;
+  max-width:100%;
+  object-fit:contain;
+}
+
+.skill-logo{
+  height:48px;
+}
+
+/* NAV LINKS */
+.nav-links a{
+  text-decoration:none;
+  font-weight:600;
+  color:#000;
+  padding:8px 14px;
+  border-radius:8px;
+  transition:.3s;
+}
+
+.nav-links a:hover{
+  background:#f26522;
+  color:#fff;
+}
+
+/* 🔹 MOBILE RESPONSIVE */
+@media (max-width:768px){
+  .navbar{
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .logos{
+    justify-content:center;
+  }
+
+  .nav-links{
+    width:100%;
+    display:flex;
+    justify-content:center;
+  }
+}
 /* FOOTER */
 footer{
   background:#1f1f1f;
@@ -207,19 +272,35 @@ footer{
 
 <body>
 
-<header>
+<header class="header">
   <div class="navbar">
-    <div class="logos">
-      <img src="https://www.gjimt.ac.in/wp-content/uploads/2025/09/gjimt-logo.png">
-     
-    </div>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="modules.html">Modules</a>
     
+    <!-- Logos Section -->
+    <div class="logos">
+      <img 
+        src="https://www.gjimt.ac.in/wp-content/uploads/2025/09/gjimt-logo.png" 
+        alt="GJIMT Logo" 
+        class="logo"
+      >
+      
+      <img 
+        src="skillx.jpg" 
+        alt="Skill Logo" 
+        class="logo skill-logo"
+      >
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav-links">
+	      <a href="index.html">Home</a>
+      <a href="modules.html">Modules</a>
     </nav>
+
   </div>
 </header>
+
+
+
 
 <!-- HERO -->
 <section class="hero">
@@ -309,4 +390,5 @@ footer{
 
 </body>
 </html>
+
 
