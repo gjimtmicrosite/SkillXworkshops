@@ -17,160 +17,140 @@
 body{background:var(--gray);}
 
 /* HEADER */
-header{background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.08);position:sticky;top:0;}
-.navbar{max-width:1200px;margin:auto;padding:14px 20px;display:flex;justify-content:space-between;}
-.logos img{height:45px;margin-right:10px;}
-nav a{margin-left:22px;text-decoration:none;color:#222;font-weight:500;}
+.header{
+  background:#fff;
+  box-shadow:0 2px 10px rgba(0,0,0,.08);
+}
+
+.navbar{
+  max-width:1200px;
+  margin:auto;
+  padding:10px 20px;
+  display:flex;
+  justify-content:space-between;
+}
+
+.logos{display:flex;gap:10px;}
+.logo{height:50px;}
 
 /* HERO */
 .hero{
   padding:90px 20px;
   text-align:center;
   background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
-  url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f') center/cover no-repeat;
+  url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f') center/cover;
   color:#fff;
 }
 
 section{padding:70px 20px;}
 .container{max-width:1200px;margin:auto;}
-.section-title{text-align:center;color:var(--primary);font-size:2.2rem;margin-bottom:50px;}
 
-.module-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:30px;}
+.section-title{
+  text-align:center;
+  color:var(--primary);
+  font-size:2rem;
+  margin-bottom:40px;
+}
+
+.module-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:30px;
+}
 
 .module-card{
   background:#fff;
-  border-radius:18px;
-  padding:30px;
+  border-radius:15px;
+  padding:25px;
   box-shadow:0 10px 25px rgba(0,0,0,.1);
 }
 
-.module-card h3{color:var(--primary);margin-bottom:16px;}
+.module-card h3{
+  color:var(--primary);
+  margin-bottom:15px;
+}
 
 .submodules span{
   display:block;
-  padding:10px 14px;
+  padding:10px;
   background:#f9f9f9;
-  border-radius:10px;
+  border-radius:8px;
   margin:8px 0;
   cursor:pointer;
   transition:.3s;
 }
 
-/* Hover effect */
-.module-card:hover .submodules span{opacity:.45;}
 .submodules span:hover{
-  opacity:1!important;
-  background:linear-gradient(135deg,#f26522,#ff914d);
+  background:#f26522;
   color:#fff;
-  transform:translateX(6px);
 }
 
 /* MODAL */
-#workshopModal{
+#modal{
   display:none;
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.65);
-  z-index:2000;
+  background:rgba(0,0,0,.6);
+  z-index:999;
   align-items:center;
   justify-content:center;
 }
 
 .modal-box{
   background:#fff;
-  border-radius:20px;
   padding:30px;
-  width:90%;
-  max-width:420px;
+  border-radius:15px;
   text-align:center;
+  width:90%;
+  max-width:350px;
 }
 
-.workshop-btn{
+.modal-box button{
   width:100%;
-  padding:16px;
+  padding:12px;
   margin:10px 0;
   border:none;
-  border-radius:14px;
+  border-radius:10px;
   cursor:pointer;
-  font-size:1rem;
-}
-  /* HEADER */
-.header{
-  width:100%;
-  background:#fff;
-  box-shadow:0 2px 10px rgba(0,0,0,.08);
+  font-size:15px;
 }
 
-/* NAVBAR */
-.navbar{
-  max-width:1200px;
-  margin:auto;
-  padding:10px 20px;
+.btn1{background:#0072ff;color:#fff;}
+.btn2{background:#f26522;color:#fff;}
+
+/* FLOATING BUTTONS */
+.floating{
+  position:fixed;
+  right:20px;
+  bottom:100px;
   display:flex;
-  align-items:center;
-  justify-content:space-between;
+  flex-direction:column;
+  gap:15px;
 }
 
-/* LOGOS */
-.logos{
-  display:flex;
-  align-items:center;
-  gap:14px;
-}
-
-.logo{
-  height:55px;
-  max-width:100%;
-  object-fit:contain;
-}
-
-.skill-logo{
-  height:48px;
-}
-
-/* NAV LINKS */
-.nav-links a{
-  text-decoration:none;
+.float-btn{
+  padding:14px 20px;
+  border:none;
+  border-radius:30px;
+  color:#fff;
+  cursor:pointer;
   font-weight:600;
-  color:#000;
-  padding:8px 14px;
-  border-radius:8px;
-  transition:.3s;
+  animation:blink 1.5s infinite;
 }
 
-.nav-links a:hover{
-  background:#f26522;
-  color:#fff;
-}
+.float1{background:#0072ff;}
+.float2{background:#f26522;}
 
-/* 🔹 MOBILE RESPONSIVE */
-@media (max-width:768px){
-  .navbar{
-    flex-direction:column;
-    gap:10px;
-  }
-
-  .logos{
-    justify-content:center;
-  }
-
-  .nav-links{
-    width:100%;
-    display:flex;
-    justify-content:center;
-  }
-}
-
-.workshop-btn.primary{
-  background:#f26522;
-  color:#fff;
+@keyframes blink{
+  0%,100%{opacity:1;}
+  50%{opacity:.6;}
 }
 
 footer{
   background:#1f1f1f;
   color:#ccc;
   text-align:center;
-  padding:18px;
+  padding:15px;
 }
 </style>
 </head>
@@ -179,33 +159,16 @@ footer{
 
 <header class="header">
   <div class="navbar">
-    
-    <!-- Logos Section -->
     <div class="logos">
-      <img 
-        src="https://www.gjimt.ac.in/wp-content/uploads/2025/09/gjimt-logo.png" 
-        alt="GJIMT Logo" 
-        class="logo"
-      >
-      
-      <img 
-        src="skillx.jpg" 
-        alt="Skill Logo" 
-        class="logo skill-logo"
-      >
+      <img src="https://www.gjimt.ac.in/wp-content/uploads/2025/09/gjimt-logo.png" class="logo">
+      <img src="skillx.jpg" class="logo">
     </div>
-
-    <!-- Navigation -->
-    <nav class="nav-links">
-        <a href="index.html">Home</a>
-      <a href="modules.html">Modules</a>
-    </nav>
-
   </div>
 </header>
+
 <section class="hero">
   <h1>SkillX Workshop Modules</h1>
-  <p>Click a workshop → choose 1-Day or 5-Day</p>
+  <p>Select any module to enroll 🚀</p>
 </section>
 
 <section>
@@ -216,35 +179,35 @@ footer{
 
 <!-- DIGITAL -->
 <div class="module-card">
-<h3>Digital Power Skills (₹ 10,000)</h3>
+<h3>Digital Power Skills (₹10,000)</h3>
 <div class="submodules">
-  <span onclick="openModal('ai-enabled-learning')">AI-Enabled Learning</span>
-  <span onclick="openModal('excel-powerbi')">Excel & Power BI</span>
-  <span onclick="openModal('web-development')">Web Development</span>
-  <span onclick="openModal('information-security')">Information Security</span>
-  <span onclick="openModal('cloud-computing')">Cloud Computing</span>
+  <span onclick="openModal('AI-Enabled Learning')">AI-Enabled Learning</span>
+  <span onclick="openModal('Excel & Power BI')">Excel & Power BI</span>
+  <span onclick="openModal('Web Development')">Web Development</span>
+  <span onclick="openModal('Information Security')">Information Security</span>
+  <span onclick="openModal('Cloud Computing')">Cloud Computing</span>
 </div>
 </div>
 
 <!-- COMMUNICATION -->
 <div class="module-card">
-<h3>Communication & Personal Branding (₹ 7,000)</h3>
+<h3>Communication & Personal Branding (₹7,000)</h3>
 <div class="submodules">
-  <span onclick="openModal('functional-english')">Functional English</span>
-  <span onclick="openModal('public-speaking')">Public Speaking</span>
-  <span onclick="openModal('canva-editing')">Canva Editing</span>
+  <span onclick="openModal('Functional English')">Functional English</span>
+  <span onclick="openModal('Public Speaking')">Public Speaking</span>
+  <span onclick="openModal('Canva Editing')">Canva Editing</span>
 </div>
 </div>
 
 <!-- BUSINESS -->
 <div class="module-card">
-<h3>Business & Financial Smart Skills (₹ 10,000)</h3>
+<h3>Business & Financial Smart Skills (₹10,000)</h3>
 <div class="submodules">
-  <span onclick="openModal('ai-business')">AI for Business</span>
-  <span onclick="openModal('tally')">Tally</span>
-  <span onclick="openModal('resume-linkedin')">Resume & LinkedIn</span>
-  <span onclick="openModal('prompt-engineering')">Prompt Engineering</span>
-  <span onclick="openModal('vedic-maths')">Vedic Maths</span>
+  <span onclick="openModal('AI for Business')">AI for Business</span>
+  <span onclick="openModal('Tally')">Tally</span>
+  <span onclick="openModal('Resume & LinkedIn')">Resume & LinkedIn</span>
+  <span onclick="openModal('Prompt Engineering')">Prompt Engineering</span>
+  <span onclick="openModal('Vedic Maths')">Vedic Maths</span>
 </div>
 </div>
 
@@ -252,41 +215,45 @@ footer{
 </div>
 </section>
 
-<footer>© 2026 GJIMT SkillX | Zero to Hero</footer>
-
 <!-- MODAL -->
-<div id="workshopModal">
+<div id="modal">
   <div class="modal-box">
-    <h2 style="color:#f26522">Choose Workshop Type</h2>
-
-    <button class="workshop-btn" onclick="goWorkshop('1day')">🚀 1-Day Workshop</button>
-    <button class="workshop-btn primary" onclick="goWorkshop('5day')">🏆 5-Day Workshop</button>
-
-    <p style="margin-top:15px;cursor:pointer;color:#777" onclick="closeModal()">Cancel</p>
+    <h3 id="moduleTitle">Select Workshop</h3>
+    <button class="btn1" onclick="go1Day()">🚀 1-Day Workshop</button>
+    <button class="btn2" onclick="go5Day()">🏆 5-Day Workshop</button>
+    <p onclick="closeModal()" style="cursor:pointer;color:#888">Cancel</p>
   </div>
 </div>
 
-<script>
-let selectedWorkshop="";
+<!-- FLOATING BUTTONS -->
+<div class="floating">
+  <button class="float-btn float1" onclick="go1Day()">1-Day Enroll</button>
+  <button class="float-btn float2" onclick="go5Day()">5-Day Enroll</button>
+</div>
 
-function openModal(workshop){
-  selectedWorkshop = workshop;
-  document.getElementById("workshopModal").style.display="flex";
+<footer>© 2026 GJIMT SkillX</footer>
+
+<script>
+let selectedModule = "";
+
+function openModal(module){
+  selectedModule = module;
+  document.getElementById("moduleTitle").innerText = module;
+  document.getElementById("modal").style.display="flex";
 }
 
 function closeModal(){
-  document.getElementById("workshopModal").style.display="none";
+  document.getElementById("modal").style.display="none";
 }
 
-function goWorkshop(type){
-  window.location.href = selectedWorkshop + "-" + type + ".html";
+function go1Day(){
+  window.location.href="singleworkshop.html";
+}
+
+function go5Day(){
+  window.location.href="contact.html";
 }
 </script>
 
 </body>
 </html>
-
-
-
-
-
