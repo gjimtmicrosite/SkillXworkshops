@@ -215,6 +215,7 @@ const workshopMap = {
 const modules = document.querySelectorAll(".module");
 const workshops = document.querySelectorAll(".workshop");
 
+/* 🔥 MODULE CHANGE */
 modules.forEach((m, i) => {
   m.addEventListener("change", () => {
     const w = workshops[i];
@@ -228,10 +229,12 @@ modules.forEach((m, i) => {
   });
 });
 
+/* 🔥 DUPLICATE LOCK */
 workshops.forEach(w => w.addEventListener("change", lockDuplicates));
 
 function lockDuplicates() {
   const selected = [...workshops].map(w => w.value).filter(Boolean);
+
   workshops.forEach(current => {
     [...current.options].forEach(opt => {
       if (!opt.value) return;
@@ -240,19 +243,21 @@ function lockDuplicates() {
   });
 }
 
-/* ✅ GOOGLE WEB APP URL */
+/* ✅ WEB APP URL */
 const WEB_APP_URL =
 "https://script.google.com/macros/s/AKfycbzPttiND8gtsmEiTYQfp-8sgs6TgxVRMHF-kHfdA5q-L09Av4pcfmjZW5TVt1jrcSY/exec";
 
-document.getElementById("workshopForm").addEventListener("submit", e => {
+/* 🔥 FORM SUBMIT */
+document.getElementById("workshopForm").addEventListener("submit", function(e) {
   e.preventDefault();
 
-  const fd = new FormData();
- fd.append("registrationType", "Bundle Workshop");
+  const fd = new URLSearchParams();
+
+  fd.append("type", "Bundle Workshop");   // ✅ FIXED
   fd.append("name", document.getElementById("name").value);
   fd.append("class", document.getElementById("class").value);
   fd.append("mobile", document.getElementById("mobile").value);
-  fd.append("email", document.getElementById("email").value); // ✅ EMAIL
+  fd.append("email", document.getElementById("email").value);
   fd.append("address", document.getElementById("address").value);
 
   fd.append("p1Module", modules[0].value);
@@ -266,21 +271,23 @@ document.getElementById("workshopForm").addEventListener("submit", e => {
     method: "POST",
     body: fd
   })
- .then(res => res.json())
-.then(data => {
-  if (data.success) {
-    alert("✅ " + data.message);
-  } else {
-    alert("❌ " + data.error);
-  }
-})
-    e.target.reset();
-    workshops.forEach(w => w.innerHTML = "<option value=''>Workshop</option>");
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert("✅ " + data.message);
+
+      // ✅ RESET INSIDE THEN
+      document.getElementById("workshopForm").reset();
+      workshops.forEach(w => w.innerHTML = "<option value=''>Workshop</option>");
+    } else {
+      alert("❌ " + data.error);
+    }
   })
   .catch(err => {
     console.error(err);
-    alert("Network error – Web App not deployed correctly");
+    alert("❌ Network error. Please try again.");
   });
+
 });
 </script>
 
