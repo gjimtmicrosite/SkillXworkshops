@@ -172,6 +172,36 @@ footer{
   text-align:center;
   padding:18px;
 }
+.btn1{background:#0072ff;color:#fff;}
+.btn2{background:#f26522;color:#fff;}
+
+/* FLOATING BUTTONS */
+.floating{
+  position:fixed;
+  right:20px;
+  bottom:100px;
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+.float-btn{
+  padding:14px 20px;
+  border:none;
+  border-radius:30px;
+  color:#fff;
+  cursor:pointer;
+  font-weight:600;
+  animation:blink 1.5s infinite;
+}
+
+.float1{background:#0072ff;}
+.float2{background:#f26522;}
+
+@keyframes blink{
+  0%,100%{opacity:1;}
+  50%{opacity:.6;}
+}
 </style>
 </head>
 
@@ -264,6 +294,16 @@ footer{
 
     <p style="margin-top:15px;cursor:pointer;color:#777" onclick="closeModal()">Cancel</p>
   </div>
+</div>
+
+<div class="floating">
+  <button class="float-btn float1" onclick="window.location.href='singleworkshop.html'">
+    1-Day Enroll
+  </button>
+
+  <button class="float-btn float2" onclick="window.location.href='contact.html'">
+    5-Day Enroll
+  </button>
 </div>
 
 <script>
