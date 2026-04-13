@@ -312,23 +312,25 @@ document.addEventListener("DOMContentLoaded", function () {
     fd.append("address", document.getElementById("address").value);
     fd.append("workshop", document.getElementById("singleWorkshop").value);
 
-    fetch(WEB_APP_URL, {
-      method: "POST",
-      body: fd
-    })
-    .then(res => res.text())
-    .then(txt => {
-      if (txt === "SUCCESS") {
-        alert("✅ Single Workshop Registration Successful!");
-        form.reset();
-      } else {
-        alert("❌ Server Error:\n" + txt);
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      alert("❌ Network error. Please check Web App deployment.");
-    });
+ fetch("YOUR_WEB_APP_URL", {
+  method: "POST",
+  body: new URLSearchParams(formData)
+})
+.then(res => res.json())
+.then(data => {
+
+  if (data.success) {
+    alert("✅ " + data.message);
+    document.getElementById("form").reset();
+  } else {
+    alert("❌ " + (data.error || "Something went wrong"));
+  }
+
+})
+.catch(err => {
+  alert("❌ Network Error. Please try again.");
+  console.error(err);
+});
   });
 
 });
