@@ -248,7 +248,7 @@ document.getElementById("workshopForm").addEventListener("submit", e => {
   e.preventDefault();
 
   const fd = new FormData();
- fd.append("type", "Bundle Workshop");
+ fd.append("registrationType", "Bundle Workshop");
   fd.append("name", document.getElementById("name").value);
   fd.append("class", document.getElementById("class").value);
   fd.append("mobile", document.getElementById("mobile").value);
