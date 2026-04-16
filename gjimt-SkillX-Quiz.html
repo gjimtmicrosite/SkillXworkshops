@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GJIMT SkillX Workshop Finder</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --blue: #0a3663;
+      --blue-dark: #072748;
+      --gold: #d4af37;
+      --gold-dark: #b89322;
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --surface-2: #f0f4f8;
+      --text: #1f2937;
+      --muted: #5b6472;
+      --border: #d9e1ea;
+      --success: #2e7d32;
+      --danger: #b42318;
+      --radius: 16px;
+      --shadow: 0 10px 30px rgba(10, 54, 99, 0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #f8fbff 0%, #f4f6fa 100%);
+      color: var(--text);
+    }
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .hero {
+      padding: 28px 28px 20px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font: 700 clamp(2rem, 4vw, 3rem) "Playfair Display", serif;
+      color: var(--blue);
+      text-align: center;
+    }
+    .sub {
+      text-align: center;
+      color: var(--muted);
+      font-size: 1.05rem;
+      margin-bottom: 18px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .full {
+      grid-column: 1 / -1;
+    }
+    .field label {
+      display: block;
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin: 0 0 8px;
+      color: var(--text);
+    }
+    .field input,
+    .field select {
+      width: 100%;
+      min-height: 48px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font: inherit;
+      background: #fff;
+    }
+    .field input:focus,
+    .field select:focus {
+      outline: none;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 4px rgba(10, 54, 99, 0.1);
+    }
+    .cta-row {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .btn {
+      appearance: none;
+      border: none;
+      border-radius: 12px;
+      padding: 13px 18px;
+      font: 700 1rem Inter, sans-serif;
+      cursor: pointer;
+      min-height: 48px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-primary {
+      background: var(--blue);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: var(--blue-dark);
+    }
+    .btn-gold {
+      background: var(--gold);
+      color: #1b1b1b;
+    }
+    .btn-gold:hover {
+      background: var(--gold-dark);
+    }
+    .btn-outline {
+      background: #fff;
+      color: var(--blue);
+      border: 1px solid var(--border);
+    }
+    .section {
+      padding: 24px 28px;
+    }
+    .hidden {
+      display: none !important;
+    }
+    .sticky-top {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(245, 247, 251, 0.96);
+      backdrop-filter: blur(8px);
+      padding: 8px 0;
+    }
+    .progress-shell {
+      margin-top: 4px;
+    }
+    .progress {
+      height: 10px;
+      background: #e7edf5;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress div {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--gold), var(--blue));
+      transition: width 0.25s ease;
+    }
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-top: 6px;
+      padding: 0 4px;
+    }
+    .intro {
+      padding: 20px 24px;
+      background: linear-gradient(
+        135deg,
+        rgba(10, 54, 99, 0.05),
+        rgba(212, 175, 55, 0.09)
+      );
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      margin-bottom: 20px;
+    }
+    .intro h2 {
+      margin: 0 0 8px;
+      color: var(--blue);
+      font-size: 1.25rem;
+    }
+    .questions {
+      display: grid;
+      gap: 14px;
+    }
+    .q-card {
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: #fff;
+    }
+    .q-title {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+    .q-no {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 30px;
+      margin-top: 2px;
+    }
+    .q-text {
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+    .opts {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .opt input { display: none; }
+    .opt label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface-2);
+      cursor: pointer;
+      font-size: 0.85rem;
+      text-align: center;
+      padding: 4px 6px;
+      transition: 0.2s ease;
+    }
+    .opt label:hover { border-color: var(--blue); }
+    .opt input:checked + label {
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+    }
+
+    .results-head {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+    .results-head h2 {
+      margin: 0 0 8px;
+      color: var(--blue);
+      font-size: 2rem;
+    }
+    .chart-shell {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: #fff;
+      margin-bottom: 18px;
+    }
+    .chart-shell canvas {
+      width: 100%;
+      max-height: 260px;
+    }
+    .score-note {
+      font-size: 0.95rem;
+      color: var(--muted);
+      text-align: center;
+      margin: 8px 0 18px;
+    }
+    .rank-list {
+      display: grid;
+      gap: 14px;
+    }
+    .rank {
+      padding: 18px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: #fff;
+    }
+    .rank.top {
+      background: linear-gradient(
+        135deg,
+        rgba(212, 175, 55, 0.14),
+        rgba(10, 54, 99, 0.05)
+      );
+      border-color: #e5c96f;
+    }
+    .rank h3 {
+      margin: 0 0 8px;
+      color: var(--blue);
+      font-size: 1.25rem;
+    }
+    .badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--gold);
+      font-weight: 800;
+      font-size: 0.78rem;
+      color: #231f10;
+      margin-bottom: 8px;
+    }
+    .program-meta {
+      color: var(--muted);
+      margin: 6px 0;
+    }
+    .price-display {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--blue);
+      margin: 8px 0;
+    }
+    .bundle-savings {
+      color: var(--success);
+      font-weight: 600;
+    }
+    .why {
+      margin-top: 10px;
+      padding: 14px;
+      border-left: 4px solid var(--blue);
+      background: #f8fbff;
+      border-radius: 10px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .warning {
+      background: rgba(180, 35, 24, 0.08);
+      border-left: 4px solid var(--danger);
+      padding: 12px;
+      border-radius: 8px;
+      color: var(--danger);
+      margin-bottom: 16px;
+      font-size: 0.95rem;
+    }
+    .footer-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+    .muted { color: var(--muted); }
+
+    @media (max-width: 760px) {
+      .wrap { padding: 14px; }
+      .grid { grid-template-columns: 1fr; }
+      .opts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .hero,
+      .section { padding: 18px; }
+      .q-text { font-size: 1rem; }
+    }
+
+    @media print {
+      .no-print,
+      .sticky-top { display: none !important; }
+      body { background: #fff; }
+      .card { box-shadow: none; border: none; }
+      .wrap { max-width: 100%; padding: 0; }
+      .chart-shell,
+      .rank { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- Screen 1: Registration -->
+    <div id="registration" class="card">
+      <div class="hero">
+        <h1>SkillX Workshop Finder</h1>
+        <div class="sub">
+          GJIMT SkillX Zero to Hero Workshops – Find your best-fit modules before 2026 Session
+        </div>
+      </div>
+      <form id="regForm" class="section">
+        <div class="grid">
+          <div class="field">
+            <label for="name">Full Name</label>
+            <input id="name" required />
+          </div>
+          <div class="field">
+            <label for="phone">WhatsApp Number</label>
+            <input id="phone" type="tel" required />
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" type="email" required />
+          </div>
+          <div class="field">
+            <label for="city">City</label>
+            <input id="city" required />
+          </div>
+        </div>
+
+        <div class="field full">
+          <label for="program">Program Interested In</label>
+          <select id="program" required>
+            <option value="">Select Program</option>
+            <option value="BBA">BBA</option>
+            <option value="BCA">BCA</option>
+            <option value="BCom">BCom (Hons)</option>
+            <option value="MCA">MCA</option>
+            <option value="MBA">MBA</option>
+          </select>
+        </div>
+
+        <div class="field full">
+          <label for="stream">Background Stream / Graduation</label>
+          <select id="stream" required>
+            <option value="">Select Background</option>
+          </select>
+        </div>
+
+        <div class="field full hidden" id="mathsField">
+          <label for="maths12">Did you have Mathematics in Class 12th?</label>
+          <select id="maths12">
+            <option value="">Select one</option>
+            <option value="Yes">Yes, I had Mathematics</option>
+            <option value="No">No, I did not have Mathematics</option>
+          </select>
+        </div>
+
+        <div class="intro full">
+          <h2>How to answer</h2>
+          <div class="muted">
+            You will see 8 questions related to your chosen program and career goals.  
+            Rate your current confidence honestly – this helps us map the right SkillX workshops.
+          </div>
+        </div>
+
+        <div class="cta-row">
+          <button class="btn btn-primary" type="submit">
+            <i data-lucide="play"></i>
+            <span>Start SkillX Assessment</span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Screen 2: Questions -->
+    <div id="testScreen" class="hidden">
+      <div class="sticky-top no-print">
+        <div class="progress-shell">
+          <div class="progress">
+            <div id="bar"></div>
+          </div>
+        </div>
+        <div class="progress-meta">
+          <span>Progress</span>
+          <span><span id="answered">0</span> / <span id="totalQ">8</span></span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="section">
+          <div class="intro">
+            <h2>Rate your Skill Confidence</h2>
+            <div class="muted">
+              Use the 5-point scale:
+              1 = Never heard of it, 2 = Heard but cannot do, 3 = Know a little, 4 = Can do basics, 5 = Quite confident.
+            </div>
+          </div>
+          <div id="questions" class="questions"></div>
+          <div class="cta-row no-print">
+            <button id="submitBtn" class="btn btn-primary" type="button" disabled>
+              <span>See My SkillX Recommendations</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 3: Results -->
+    <div id="resultScreen" class="hidden">
+      <div class="card">
+        <div class="section">
+          <div class="results-head">
+            <h2>Your SkillX Plan</h2>
+            <div class="muted">
+              Prepared for <strong id="studentNameOut"></strong>
+            </div>
+          </div>
+
+          <div id="bcaWarning" class="warning hidden"></div>
+
+          <div class="chart-shell">
+            <canvas id="skillChart"></canvas>
+          </div>
+          <div class="score-note">
+            This bar chart shows your current confidence across Digital, Communication & Business/Finance skills.
+          </div>
+
+          <div id="rankings" class="rank-list"></div>
+
+          <div class="footer-actions no-print">
+            <a href="tel:7973241456" class="btn btn-primary">
+              <i data-lucide="phone-call"></i>
+              <span>Call 7973241456</span>
+            </a>
+            <a href="tel:8988368113" class="btn btn-primary">
+              <i data-lucide="phone-call"></i>
+              <span>Call 8988368113</span>
+            </a>
+            <button class="btn btn-gold" type="button" onclick="copyWhatsAppMessage()">
+              <i data-lucide="message-circle"></i>
+              <span>Copy WhatsApp Message</span>
+            </button>
+            <button class="btn btn-outline" type="button" onclick="window.print()">
+              <i data-lucide="printer"></i>
+              <span>Print / Download</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---------- DATA ----------
+    const MODULE_PRICE = 2500; // per individual workshop as decided
+    const student = {};
+    let latestResults = null;
+    let chartInstance = null;
+
+    // SkillX modules grouped by domain [file:2]
+    const modules = {
+      Digital: [
+        { key: "AI-Enabled Learning", label: "AI-Enabled Learning (Napkin.ai, smartsummarize)" },
+        { key: "Excel Essentials + Power BI", label: "Excel Essentials + Power BI Analytics" },
+        { key: "Web Development HTML/JS", label: "Web Development: HTML & JavaScript Basics" },
+        { key: "Information Security", label: "Information Security" },
+        { key: "Cloud Computing", label: "Cloud Computing Fundamentals" }
+      ],
+      Comm: [
+        { key: "Functional English", label: "Functional English" },
+        { key: "Public Speaking", label: "Public Speaking & Presentation Confidence" },
+        { key: "Canva Editing", label: "Canva-Based Photo / Video Editing" }
+      ],
+      Business: [
+        { key: "AI Business Decisions", label: "AI for Business Decision-Making" },
+        { key: "Resume & LinkedIn", label: "Professional Resume & LinkedIn Optimization" },
+        { key: "Tally", label: "Tally Accounting Basics" },
+        { key: "Prompt Engineering", label: "Prompt Engineering" },
+        { key: "Vedic Maths", label: "Vedic Maths", mustVedic: true }
+      ]
+    };
+
+    // Domain bundles [file:2]
+    const domainBundles = {
+      Digital: { name: "Digital Power Skills", modules: 5, price: 10000 },
+      Comm: { name: "Communication & Personal Branding", modules: 3, price: 7000 },
+      Business: { name: "Business & Finance Smart Skills", modules: 5, price: 10000 }
+    };
+
+    // Program-specific question sets (8 each, mapped to domains)
+    // Each question: { id, text, domain }
+    const programQuestions = {
+      BBA: [
+        { id: 1, text: "Presenting ideas confidently in front of a class or team.", domain: "Comm" },
+        { id: 2, text: "Writing professional emails or business messages.", domain: "Comm" },
+        { id: 3, text: "Analysing numbers in Excel (sales, expenses, basic reports).", domain: "Digital" },
+        { id: 4, text: "Creating simple presentations that look visually professional.", domain: "Comm" },
+        { id: 5, text: "Understanding business terms like profit, ROI, and budgeting.", domain: "Business" },
+        { id: 6, text: "Using LinkedIn or resume tools to present your profile.", domain: "Business" },
+        { id: 7, text: "Using AI tools to summarise documents or generate ideas.", domain: "Digital" },
+        { id: 8, text: "Solving basic maths quickly in your head.", domain: "Business" }
+      ],
+      BCA: [
+        { id: 1, text: "Writing simple programs or logic in any programming language.", domain: "Digital" },
+        { id: 2, text: "Creating basic web pages or understanding HTML/CSS.", domain: "Digital" },
+        { id: 3, text: "Working with Excel or data tables for analysis.", domain: "Digital" },
+        { id: 4, text: "Understanding basic cybersecurity concepts.", domain: "Digital" },
+        { id: 5, text: "Explaining technical ideas clearly to non-technical people.", domain: "Comm" },
+        { id: 6, text: "Using English comfortably in presentations or lab vivas.", domain: "Comm" },
+        { id: 7, text: "Using AI tools (like ChatGPT) to debug or improve code.", domain: "Business" },
+        { id: 8, text: "Doing maths calculations needed in programming and logic.", domain: "Business" }
+      ],
+      BCom: [
+        { id: 1, text: "Working with accounts, ledgers, and basic bookkeeping.", domain: "Business" },
+        { id: 2, text: "Using Excel for financial tables and simple analysis.", domain: "Digital" },
+        { id: 3, text: "Understanding GST, taxation, or basic laws taught in commerce.", domain: "Business" },
+        { id: 4, text: "Explaining financial information to others in English.", domain: "Comm" },
+        { id: 5, text: "Creating neat, professional-looking reports or charts.", domain: "Digital" },
+        { id: 6, text: "Building your resume or LinkedIn for finance / accounts roles.", domain: "Business" },
+        { id: 7, text: "Public speaking in class presentations or group projects.", domain: "Comm" },
+        { id: 8, text: "Doing fast calculations for accounts and finance.", domain: "Business" }
+      ],
+      MCA: [
+        { id: 1, text: "Building software or web applications from requirements.", domain: "Digital" },
+        { id: 2, text: "Working with databases, data analytics, or dashboards.", domain: "Digital" },
+        { id: 3, text: "Understanding cloud concepts for deployment.", domain: "Digital" },
+        { id: 4, text: "Explaining technical projects in interviews.", domain: "Comm" },
+        { id: 5, text: "Creating a strong tech resume and LinkedIn profile.", domain: "Business" },
+        { id: 6, text: "Using AI tools to speed up coding or documentation.", domain: "Business" },
+        { id: 7, text: "Handling cyber security basics in projects.", domain: "Digital" },
+        { id: 8, text: "Speaking confidently in group discussions and HR rounds.", domain: "Comm" }
+      ],
+      MBA: [
+        { id: 1, text: "Analysing data in Excel for business decisions.", domain: "Digital" },
+        { id: 2, text: "Presenting case study solutions with confidence.", domain: "Comm" },
+        { id: 3, text: "Understanding financial statements and basic ratios.", domain: "Business" },
+        { id: 4, text: "Designing professional slides that look corporate-ready.", domain: "Comm" },
+        { id: 5, text: "Using AI tools for research, reports, or decision support.", domain: "Business" },
+        { id: 6, text: "Networking on LinkedIn and positioning your personal brand.", domain: "Business" },
+        { id: 7, text: "Using English comfortably in GDs and interviews.", domain: "Comm" },
+        { id: 8, text: "Doing fast calculations, mental maths, and estimations.", domain: "Business" }
+      ]
+    };
+
+    // Program & stream weights (need levels)
+    const domainNeedBase = {
+      BBA: { Digital: 2, Comm: 3, Business: 3 },
+      BCA: { Digital: 4, Comm: 2, Business: 2 },
+      BCom: { Digital: 2, Comm: 2, Business: 4 },
+      MCA: { Digital: 4, Comm: 2, Business: 2 },
+      MBA: { Digital: 3, Comm: 3, Business: 4 }
+    };
+
+    // Stream adjustments [file:1][file:2]
+    const streamBoost = {
+      Commerce: { Business: 1, Digital: 1 },
+      "Non-Medical": { Digital: 1 },
+      Medical: { Comm: 1 },
+      Arts: { Comm: 1 },
+      Vocational: { Digital: 1 },
+      BA: { Comm: 1 },
+      BCom: { Business: 1 },
+      BCA: { Digital: 1 },
+      BSc: { Digital: 1 },
+      "BSc-IT/CS": { Digital: 1 },
+      "Other Graduate Degree": {}
+    };
+
+    // ---------- FORM LOGIC ----------
+
+    const programSelect = document.getElementById("program");
+    const streamSelect = document.getElementById("stream");
+    const mathsField = document.getElementById("mathsField");
+    const mathsSelect = document.getElementById("maths12");
+
+    function populateStreams() {
+      const program = programSelect.value;
+      streamSelect.innerHTML = '<option value="">Select Background</option>';
+      mathsField.classList.add("hidden");
+      mathsSelect.value = "";
+
+      let opts = [];
+      if (program === "MBA" || program === "MCA") {
+        opts = ["BA", "BCom", "BCA", "BSc", "BSc-IT/CS", "Other Graduate Degree"];
+      } else {
+        opts = ["Commerce", "Non-Medical", "Medical", "Arts", "Vocational"];
+      }
+      opts.forEach((val) => {
+        const op = document.createElement("option");
+        op.value = val;
+        op.textContent = val;
+        streamSelect.appendChild(op);
+      });
+
+      if (program === "BCA") {
+        mathsField.classList.remove("hidden");
+      }
+    }
+
+    programSelect.addEventListener("change", populateStreams);
+
+    const regForm = document.getElementById("regForm");
+    const registration = document.getElementById("registration");
+    const testScreen = document.getElementById("testScreen");
+    const resultScreen = document.getElementById("resultScreen");
+
+    regForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      student.name = document.getElementById("name").value.trim();
+      student.phone = document.getElementById("phone").value.trim();
+      student.email = document.getElementById("email").value.trim();
+      student.city = document.getElementById("city").value.trim();
+      student.program = programSelect.value;
+      student.stream = streamSelect.value;
+      student.maths12 = mathsSelect.value || null;
+
+      registration.classList.add("hidden");
+      testScreen.classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      renderQuestions();
+      lucide.createIcons();
+    });
+
+    // ---------- QUESTIONS & PROGRESS ----------
+
+    const questionsContainer = document.getElementById("questions");
+    const totalQEl = document.getElementById("totalQ");
+    const answeredEl = document.getElementById("answered");
+    const barEl = document.getElementById("bar");
+    const submitBtn = document.getElementById("submitBtn");
+    const TOTAL_QUESTIONS = 8;
+
+    function renderQuestions() {
+      const qs = programQuestions[student.program] || [];
+      questionsContainer.innerHTML = "";
+      totalQEl.textContent = qs.length;
+      answeredEl.textContent = "0";
+      barEl.style.width = "0%";
+      submitBtn.disabled = true;
+
+      qs.forEach((q, idx) => {
+        const card = document.createElement("div");
+        card.className = "q-card";
+        card.innerHTML = `
+          <div class="q-title">
+            <div class="q-no">${idx + 1}</div>
+            <div class="q-text">${q.text}</div>
+          </div>
+          <div class="opts">
+            ${[1,2,3,4,5].map(val => {
+              const label =
+                val === 1 ? "1 – Never heard of it" :
+                val === 2 ? "2 – Heard but cannot do" :
+                val === 3 ? "3 – Know a little" :
+                val === 4 ? "4 – Can do basics" :
+                             "5 – Quite confident";
+              return `
+                <div class="opt">
+                  <input type="radio" id="q${q.id}_${val}" name="q${q.id}" value="${val}">
+                  <label for="q${q.id}_${val}">${label}</label>
+                </div>
+              `;
+            }).join("")}
+          </div>
+        `;
+        questionsContainer.appendChild(card);
+      });
+
+      attachProgressEvents();
+    }
+
+    function attachProgressEvents() {
+      document.querySelectorAll('#questions input[type="radio"]').forEach((inp) => {
+        inp.addEventListener("change", updateProgress);
+      });
+    }
+
+    function updateProgress() {
+      const answered = document.querySelectorAll('#questions input[type="radio"]:checked').length;
+      answeredEl.textContent = answered;
+      barEl.style.width = (answered / TOTAL_QUESTIONS) * 100 + "%";
+      submitBtn.disabled = answered < TOTAL_QUESTIONS;
+    }
+
+    submitBtn.addEventListener("click", () => {
+      calculateResults();
+      testScreen.classList.add("hidden");
+      resultScreen.classList.remove("hidden");
+      renderResults();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    // ---------- SCORING & RECOMMENDATIONS ----------
+
+    function calculateResults() {
+      const qs = programQuestions[student.program] || [];
+      const domainScores = { Digital: 0, Comm: 0, Business: 0 };
+      const domainCounts = { Digital: 0, Comm: 0, Business: 0 };
+
+      qs.forEach((q) => {
+        const valEl = document.querySelector(`input[name="q${q.id}"]:checked`);
+        if (valEl) {
+          const val = parseInt(valEl.value, 10);
+          domainScores[q.domain] += val;
+          domainCounts[q.domain] += 1;
+        }
+      });
+
+      Object.keys(domainScores).forEach((d) => {
+        domainScores[d] = domainCounts[d] ? domainScores[d] / domainCounts[d] : 0;
+      });
+
+      const baseNeeds = { ...domainNeedBase[student.program] };
+      const sBoost = streamBoost[student.stream] || {};
+      Object.keys(sBoost).forEach((d) => { baseNeeds[d] += sBoost[d]; });
+
+      const gaps = {};
+      Object.keys(baseNeeds).forEach((d) => {
+        gaps[d] = baseNeeds[d] - domainScores[d];
+      });
+
+      const domainOrder = Object.entries(gaps)
+        .sort((a, b) => b[1] - a[1])
+        .map(([d]) => d);
+
+      const selectedModules = [];
+      domainOrder.forEach((d) => {
+        const list = modules[d] || [];
+        if (list.length) {
+          selectedModules.push(list[0]);
+          if (list[1]) selectedModules.push(list[1]);
+        }
+      });
+
+      if (student.program === "BCA" && student.maths12 === "No") {
+        const vedic = modules.Business.find((m) => m.key === "Vedic Maths");
+        const already = selectedModules.find((m) => m.key === "Vedic Maths");
+        if (vedic && !already) selectedModules.unshift(vedic);
+      }
+
+      const uniqueModules = [];
+      const seen = new Set();
+      selectedModules.forEach((m) => {
+        if (!seen.has(m.key)) {
+          seen.add(m.key);
+          uniqueModules.push(m);
+        }
+      });
+
+      const mustDo = uniqueModules[0] || null;
+      const priority2 = uniqueModules[1] || null;
+      const priority3 = uniqueModules[2] || null;
+
+      const bundleCandidates = uniqueModules.slice(0, 4);
+      const bundleDomains = { Digital: 0, Comm: 0, Business: 0 };
+      bundleCandidates.forEach((m) => {
+        const d = getDomainFromModuleKey(m.key);
+        bundleDomains[d] += 1;
+      });
+
+      let bundleDomain = null;
+      ["Digital", "Comm", "Business"].forEach((d) => {
+        if (!bundleDomain || bundleDomains[d] > bundleDomains[bundleDomain]) {
+          bundleDomain = d;
+        }
+      });
+
+      const bundleInfo = domainBundles[bundleDomain];
+      const bundleModules = bundleCandidates.filter((m) => getDomainFromModuleKey(m.key) === bundleDomain);
+
+      const indivPrice = bundleModules.length * MODULE_PRICE;
+      let discountRate = 0;
+      if (bundleModules.length === 2) discountRate = 0.05;
+      else if (bundleModules.length === 3) discountRate = 0.10;
+      else if (bundleModules.length >= 4) discountRate = 0.15;
+
+      const bundleOriginal = bundleInfo ? bundleInfo.price : indivPrice;
+      const bundleDiscounted = Math.round(bundleOriginal * (1 - discountRate));
+      const bundleSavings = bundleOriginal - bundleDiscounted;
+
+      latestResults = {
+        scores: domainScores,
+        needs: baseNeeds,
+        gaps,
+        mustDo,
+        priority2,
+        priority3,
+        bundleDomain,
+        bundleInfo,
+        bundleModules,
+        bundlePricing: {
+          original: bundleOriginal,
+          discounted: bundleDiscounted,
+          savings: bundleSavings,
+          discountRate
+        },
+        allModules: uniqueModules.slice(0, 4),
+        student: { ...student }
+      };
+    }
+
+    function getDomainFromModuleKey(key) {
+      if (modules.Digital.some((m) => m.key === key)) return "Digital";
+      if (modules.Comm.some((m) => m.key === key)) return "Comm";
+      if (modules.Business.some((m) => m.key === key)) return "Business";
+      return "Business";
+    }
+
+    // ---------- RENDER RESULTS ----------
+
+    function renderResults() {
+      if (!latestResults) return;
+      document.getElementById("studentNameOut").textContent =
+        `${latestResults.student.name} – ${latestResults.student.program}`;
+
+      const warningEl = document.getElementById("bcaWarning");
+      warningEl.classList.add("hidden");
+      warningEl.textContent = "";
+
+      if (latestResults.student.program === "BCA" && latestResults.student.maths12 === "No") {
+        warningEl.classList.remove("hidden");
+        warningEl.innerHTML =
+          "<strong>BCA Maths Note:</strong> You did not have Mathematics in Class 12th. " +
+          "Vedic Maths SkillX workshop is marked as a <strong>must-do</strong> to strengthen your quantitative foundation along with other recommended modules.";
+      }
+
+      renderBarChart(latestResults.scores, latestResults.needs);
+
+      const rankings = document.getElementById("rankings");
+      rankings.innerHTML = "";
+
+      if (latestResults.mustDo) {
+        rankings.appendChild(createModuleCard("Must Do Workshop", latestResults.mustDo, true));
+      }
+      if (latestResults.priority2) {
+        rankings.appendChild(createModuleCard("Priority Option 2", latestResults.priority2, false));
+      }
+      if (latestResults.priority3) {
+        rankings.appendChild(createModuleCard("Priority Option 3", latestResults.priority3, false));
+      }
+
+      if (latestResults.bundleModules && latestResults.bundleModules.length >= 2) {
+        rankings.appendChild(createBundleCard());
+      }
+
+      lucide.createIcons();
+    }
+
+    function renderBarChart(scores, needs) {
+      const ctx = document.getElementById("skillChart").getContext("2d");
+      if (chartInstance) chartInstance.destroy();
+
+      chartInstance = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: ["Digital Skills", "Communication", "Business / Finance"],
+          datasets: [
+            {
+              label: "Your Confidence (1–5)",
+              data: [scores.Digital, scores.Comm, scores.Business],
+              backgroundColor: "rgba(10, 54, 99, 0.7)"
+            },
+            {
+              label: "Need Level for Program",
+              data: [needs.Digital, needs.Comm, needs.Business],
+              backgroundColor: "rgba(212, 175, 55, 0.8)"
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: true }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: { stepSize: 1 }
+            }
+          }
+        }
+      });
+    }
+
+    function createModuleCard(title, moduleObj, isMust) {
+      const domain = getDomainFromModuleKey(moduleObj.key);
+      const div = document.createElement("div");
+      div.className = "rank";
+      div.innerHTML = `
+        <div class="badge">${title}</div>
+        <h3>${moduleObj.label}</h3>
+        <div class="program-meta">
+          Domain: ${domain === "Digital" ? "Digital Skills" : domain === "Comm" ? "Communication & Personal Branding" : "Business & Financial Smart Skills"}
+        </div>
+        <div class="price-display">
+          ₹${MODULE_PRICE.toLocaleString()}/- (Individual SkillX Workshop)
+          ${isMust && moduleObj.key === "Vedic Maths" ? "<br><span class=\"bundle-savings\">No discount applicable – foundation workshop for you.</span>" : ""}
+        </div>
+        <div class="why">
+          <strong>Why this workshop:</strong> Your current confidence in ${domainLabel(domain)} is lower than what ${latestResults.student.program} expects. This workshop directly builds that gap through hands-on tasks and projects.<br><br>
+          <strong>Career advancement:</strong> As a ${backgroundLabel()}, this will help you perform better in class, stand out in assignments, and be more ready for internships and placements.<br><br>
+          <strong>Why before 2026 Session:</strong> Completing this before the August 2026 session means you enter ${latestResults.student.program} with confidence, skills already in practice, and a SkillX certificate on your resume.
+        </div>
+      `;
+      if (title === "Must Do Workshop") {
+        div.classList.add("top");
+      }
+      return div;
+    }
+
+    function createBundleCard() {
+      const b = latestResults.bundlePricing;
+      const d = latestResults.bundleDomain;
+      const info = latestResults.bundleInfo;
+      const names = latestResults.bundleModules.map((m) => m.label);
+
+      const div = document.createElement("div");
+      div.className = "rank top";
+      div.innerHTML = `
+        <div class="badge">Best Bundle Option</div>
+        <h3>${info ? info.name : domainLabel(d) + " Bundle"}</h3>
+        <div class="program-meta">
+          Covers: ${names.join(", ")}
+        </div>
+        <div class="price-display">
+          Original: ₹${b.original.toLocaleString()}/-<br>
+          <span class="bundle-savings">
+            Bundle Offer: ₹${b.discounted.toLocaleString()}/-
+            ${b.discountRate > 0 ? ` (You save ₹${b.savings.toLocaleString()}/-)` : ""}
+          </span>
+        </div>
+        <div class="why">
+          <strong>Why this bundle:</strong> You need multiple skills in ${domainLabel(d)} to excel in ${latestResults.student.program}. This bundle covers them together in a structured, Zero to Hero format.<br><br>
+          <strong>Career advancement:</strong> Instead of fixing one skill at a time, you upgrade an entire domain – making you more industry-ready for projects, internships, and campus placements.<br><br>
+          <strong>Why before 2026 Session:</strong> Completing this bundle before August 2026 ensures you start ${latestResults.student.program} ahead of your batch, with practical exposure and confidence to participate actively from day one.
+        </div>
+      `;
+      return div;
+    }
+
+    function domainLabel(d) {
+      if (d === "Digital") return "Digital Skills";
+      if (d === "Comm") return "Communication & Personal Branding";
+      return "Business & Financial Smart Skills";
+    }
+
+    function backgroundLabel() {
+      if (!latestResults.student.stream) return "a student";
+      return `${latestResults.student.stream} student`;
+    }
+
+    // ---------- WHATSAPP MESSAGE ----------
+
+    function copyWhatsAppMessage() {
+      if (!latestResults) return;
+      const modulesText = latestResults.allModules
+        .map((m, idx) => `${idx + 1}. ${m.label}`)
+        .join("\n");
+
+      const msg =
+        `Hi GJIMT Team,\n\n` +
+        `I have completed the SkillX Workshop Finder.\n\n` +
+        `Program: ${latestResults.student.program}\n` +
+        `Background: ${latestResults.student.stream}\n` +
+        (latestResults.student.program === "BCA"
+          ? `Maths in 12th: ${latestResults.student.maths12 || "Not specified"}\n`
+          : "") +
+        `City: ${latestResults.student.city}\n\n` +
+        `Recommended SkillX workshops:\n${modulesText}\n\n` +
+        `Best bundle domain: ${domainLabel(latestResults.bundleDomain)}\n` +
+        `Bundle offer: ₹${latestResults.bundlePricing.discounted.toLocaleString()}/-\n\n` +
+        `Name: ${latestResults.student.name}\n` +
+        `WhatsApp: ${latestResults.student.phone}\n` +
+        `Email: ${latestResults.student.email}\n\n` +
+        `I would like to join these SkillX Zero to Hero workshops before the August 2026 session. Please guide me on the next steps.`;
+
+      navigator.clipboard.writeText(msg).then(() => {
+        alert("WhatsApp message copied. Paste it in WhatsApp to send to GJIMT.");
+      });
+    }
+
+    window.copyWhatsAppMessage = copyWhatsAppMessage;
+
+    // ---------- INIT ----------
+    populateStreams();
+    lucide.createIcons();
+  </script>
+</body>
+</html>
