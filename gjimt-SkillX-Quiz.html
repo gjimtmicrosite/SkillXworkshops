@@ -520,13 +520,11 @@
       </div>
     </div>
   </div>
+  
 
   <script>
     // ---------- DATA ----------
-    const MODULE_PRICE = 2500; // per individual workshop as decided
-    const student = {};
-    let latestResults = null;
-    let chartInstance = null;
+
 
     // SkillX modules grouped by domain [file:2]
     const modules = {
@@ -1058,5 +1056,68 @@
     populateStreams();
     lucide.createIcons();
   </script>
+  <!-- YOUR FULL CODE SAME — ONLY SCRIPT UPDATED -->
+
+<script>
+  // ---------- GOOGLE SHEET CONFIG ----------
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby5WeOSAvvZim5QpmVf8fhjFnEsY8zkWo-ugS0cJhLzp_QA3PaGpdkN2NKQ4Tw-tfJpnw/exec";
+
+  function sendToGoogleSheet(data) {
+  fetch(SCRIPT_URL, {
+  method: "POST",
+  mode: "no-cors",
+  body: JSON.stringify(data)
+})
+  .then(res => res.text())
+  .then(res => {
+    console.log("SUCCESS:", res);
+    alert("Data successfully saved to Google Sheet ✅");
+  })
+  .catch(err => {
+    console.error("ERROR:", err);
+    alert("Error sending data ❌");
+  });
+}
+
+  // ---------- DATA ----------
+  const MODULE_PRICE = 2500;
+  const student = {};
+  let latestResults = null;
+  let chartInstance = null;
+
+  // (⚠️ ALL YOUR ORIGINAL CODE SAME — NO CHANGE ABOVE THIS LINE)
+
+  submitBtn.addEventListener("click", () => {
+    calculateResults();
+    testScreen.classList.add("hidden");
+    resultScreen.classList.remove("hidden");
+    renderResults();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    // ✅ SEND DATA TO GOOGLE SHEET
+    if (latestResults) {
+      const payload = {
+        name: latestResults.student.name,
+        phone: latestResults.student.phone,
+        email: latestResults.student.email,
+        city: latestResults.student.city,
+        program: latestResults.student.program,
+        stream: latestResults.student.stream,
+        maths12: latestResults.student.maths12 || "",
+        score_digital: latestResults.scores.Digital,
+        score_comm: latestResults.scores.Comm,
+        score_business: latestResults.scores.Business,
+       must_do: latestResults.mustDo ? latestResults.mustDo.label : "",
+priority2: latestResults.priority2 ? latestResults.priority2.label : "",
+priority3: latestResults.priority3 ? latestResults.priority3.label : "",
+        bundle_domain: latestResults.bundleDomain,
+        bundle_price: latestResults.bundlePricing.discounted
+      };
+
+      sendToGoogleSheet(payload);
+    }
+  });
+
+</script>
 </body>
 </html>
