@@ -370,6 +370,26 @@
   </style>
 </head>
 <body>
+  <script>
+  // Password Protection
+  const correctPassword = "Bingo";
+
+  let enteredPassword = prompt("Enter Password to Access SkillX Workshop Finder");
+
+  // Keep asking until correct password entered
+  while (enteredPassword !== correctPassword) {
+    enteredPassword = prompt("Incorrect Password ❌\nPlease enter correct password:");
+    
+    // If user presses cancel
+    if (enteredPassword === null) {
+      document.body.innerHTML = "<h2 style='text-align:center;margin-top:100px;font-family:sans-serif;'>Access Denied</h2>";
+      throw new Error("Access denied");
+    }
+  }
+
+  // Access granted
+  alert("Access Granted ✅");
+</script>
   <div class="wrap">
     <!-- Screen 1: Registration -->
     <div id="registration" class="card">
