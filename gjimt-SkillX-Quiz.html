@@ -371,24 +371,41 @@
 </head>
 <body>
   <script>
-  // Password Protection
-  const correctPassword = "Bingo";
+(function () {
+  var password = prompt("Enter Password to Access the Quiz:");
 
-  let enteredPassword = prompt("Enter Password to Access SkillX Workshop Finder");
+  if (password !== "Bingo") {
 
-  // Keep asking until correct password entered
-  while (enteredPassword !== correctPassword) {
-    enteredPassword = prompt("Incorrect Password ❌\nPlease enter correct password:");
-    
-    // If user presses cancel
-    if (enteredPassword === null) {
-      document.body.innerHTML = "<h2 style='text-align:center;margin-top:100px;font-family:sans-serif;'>Access Denied</h2>";
-      throw new Error("Access denied");
-    }
+    // Remove everything from page
+    document.documentElement.innerHTML = `
+      <head>
+        <title>Access Denied</title>
+        <style>
+          body{
+            margin:0;
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            font-family:Arial,sans-serif;
+            background:#111;
+            color:white;
+          }
+          h2{
+            font-size:32px;
+            letter-spacing:1px;
+          }
+        </style>
+      </head>
+      <body>
+        <h2>❌ Access Denied</h2>
+      </body>
+    `;
+
+    // Stop further execution completely
+    throw new Error("Access Denied");
   }
-
-  // Access granted
-  alert("Access Granted ✅");
+})();
 </script>
   <div class="wrap">
     <!-- Screen 1: Registration -->
