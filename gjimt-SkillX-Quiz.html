@@ -372,39 +372,105 @@
 <body>
   <script>
 (function () {
-  var password = prompt("Enter Password to Access the Quiz:");
+  // Lock page content until correct password is entered
+  document.documentElement.classList.add("quiz-locked");
 
-  if (password !== "Bingo") {
+  var lockStyle = document.createElement("style");
+  lockStyle.textContent = `
+    .quiz-locked .wrap {
+      display: none !important;
+    }
+    #passwordOverlay {
+      position: fixed;
+      inset: 0;
+      background: #111;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999999;
+      font-family: Arial, sans-serif;
+    }
+    #passwordBox {
+      background: #ffffff;
+      width: 320px;
+      padding: 28px;
+      border-radius: 14px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,.35);
+    }
+    #passwordBox h2 {
+      margin: 0 0 18px;
+      color: #0a1a2f;
+      font-size: 24px;
+    }
+    #quizPassword {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid #cccccc;
+      border-radius: 10px;
+      font-size: 16px;
+      margin-bottom: 14px;
+      box-sizing: border-box;
+      outline: none;
+    }
+    #quizPassword:focus {
+      border-color: #0a3663;
+      box-shadow: 0 0 0 4px rgba(10,54,99,.12);
+    }
+    #openQuizBtn {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 10px;
+      background: #0a3663;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    #passwordError {
+      display: none;
+      color: red;
+      margin-top: 12px;
+      font-weight: 700;
+    }
+  `;
+  document.head.appendChild(lockStyle);
 
-    // Remove everything from page
-    document.documentElement.innerHTML = `
-      <head>
-        <title>Access Denied</title>
-        <style>
-          body{
-            margin:0;
-            height:100vh;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            font-family:Arial,sans-serif;
-            background:#111;
-            color:white;
-          }
-          h2{
-            font-size:32px;
-            letter-spacing:1px;
-          }
-        </style>
-      </head>
-      <body>
-        <h2>❌ Access Denied</h2>
-      </body>
-    `;
+  function checkPassword() {
+    var enteredPassword = document.getElementById("quizPassword").value.trim();
 
-    // Stop further execution completely
-    throw new Error("Access Denied");
+    if (enteredPassword === "Bingo") {
+      document.documentElement.classList.remove("quiz-locked");
+      document.getElementById("passwordOverlay").remove();
+    } else {
+      document.getElementById("passwordError").style.display = "block";
+      document.getElementById("quizPassword").value = "";
+      document.getElementById("quizPassword").focus();
+    }
   }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var overlay = document.createElement("div");
+    overlay.id = "passwordOverlay";
+    overlay.innerHTML = `
+      <div id="passwordBox">
+        <h2>Enter Password</h2>
+        <input id="quizPassword" type="password" placeholder="Enter Password" autocomplete="off">
+        <button id="openQuizBtn" type="button">Open Quiz</button>
+        <div id="passwordError">Wrong Password</div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+
+    document.getElementById("openQuizBtn").addEventListener("click", checkPassword);
+    document.getElementById("quizPassword").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        checkPassword();
+      }
+    });
+    document.getElementById("quizPassword").focus();
+  });
 })();
 </script>
   <div class="wrap">
